@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turing News | Intelligence for the Modern World</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #222;
+            background-color: #f9f9f9;
+        }
+        
+        /* Typography */
+        h1, h2, h3 {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        /* Color Palette - Professional WSJ-inspired */
+        :root {
+            --navy: #003366;
+            --red-accent: #9f1e2e;
+            --gray-dark: #333333;
+            --gray-light: #666666;
+        }
+        
+        /* Top Navigation Bar */
+        .top-bar {
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+            font-size: 0.9rem;
+            padding: 8px 0;
+        }
+        
+        .top-bar-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Main Header */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .main-header {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            font-size: 2.1rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            color: var(--navy);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .logo span {
+            color: var(--red-accent);
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: #222;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: color 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            color: var(--red-accent);
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .search-bar {
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 260px;
+        }
+        
+        .btn-subscribe {
+            background-color: var(--red-accent);
+            color: white;
+            padding: 10px 22px;
+            border: none;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        /* Advertisement Banner */
+        .ad-banner {
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 12px 0;
+            font-size: 0.85rem;
+            color: #555;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        /* Hero Section */
+        .hero {
+            max-width: 1280px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+        
+        .hero-main {
+            position: relative;
+        }
+        
+        .hero-image {
+            width: 100%;
+            height: 520px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.85));
+            color: white;
+            padding: 40px 30px 30px;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
+        
+        .category-label {
+            color: var(--red-accent);
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .hero-title {
+            font-size: 2.8rem;
+            margin: 12px 0;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .sidebar-ad {
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            min-height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+        }
+        
+        /* Main Content Area */
+        .main-content {
+            max-width: 1280px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+        
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 30px;
+        }
+        
+        .news-card {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 25px;
+        }
+        
+        .news-card img {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+        
+        .news-card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        
+        .meta {
+            font-size: 0.85rem;
+            color: var(--gray-light);
+        }
+        
+        /* Section Headers */
+        .section-header {
+            border-bottom: 3px solid var(--navy);
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            color: var(--navy);
+        }
+        
+        /* Category Navigation */
+        .category-nav {
+            background: white;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            padding: 12px 0;
+        }
+        
+        .category-links {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #111;
+            color: #ccc;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-col h4 {
+            color: white;
+            margin-bottom: 16px;
+            font-size: 1.1rem;
+        }
+        
+        .footer-col a {
+            color: #aaa;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .footer-bottom {
+            max-width: 1280px;
+            margin: 50px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <div>Tuesday, May 12, 2026</div>
+            <div>
+                <a href="#" style="margin-right: 20px; color: #222;">Markets</a>
+                <a href="#" style="color: var(--red-accent); font-weight: 700;">Subscribe Now →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER -->
+    <header>
+        <div class="main-header">
+            <!-- Logo -->
+            <a href="#" class="logo">
+                TURING <span>NEWS</span>
+            </a>
+            
+            <!-- Navigation -->
+            <ul class="nav-menu">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">World</a></li>
+                <li><a href="#">Finance</a></li>
+                <li><a href="#">Technology</a></li>
+                <li><a href="#">Politics</a></li>
+            </ul>
+            
+            <div class="header-right">
+                <input type="text" class="search-bar" placeholder="Search Turing News...">
+                <button class="btn-subscribe">Subscribe</button>
+                <i class="fas fa-user-circle" style="font-size: 1.6rem; color: #555; cursor: pointer;"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- CATEGORY NAV -->
+    <nav class="category-nav">
+        <div class="category-links">
+            <a href="#">Latest News</a>
+            <a href="#">Finance & Markets</a>
+            <a href="#">Technology</a>
+            <a href="#">Politics</a>
+            <a href="#">Sports</a>
+            <a href="#">Health</a>
+            <a href="#">Entertainment</a>
+            <a href="#">Science</a>
+        </div>
+    </nav>
+
+    <!-- ADVERTISEMENT BANNER -->
+    <div class="ad-banner">
+        <strong>ADVERTISEMENT</strong> — Discover the Future of AI with xAI
+    </div>
+
+    <!-- HERO SECTION -->
+    <div class="hero">
+        <!-- Main Story -->
+        <div class="hero-main">
+            <img src="https://picsum.photos/id/1015/1200/700" alt="Hero Image" class="hero-image">
+            <div class="hero-overlay">
+                <div class="category-label">Technology • Breaking</div>
+                <h1 class="hero-title">AI Reaches New Milestone: Models Now Outperform Humans in Complex Reasoning</h1>
+                <p style="margin-top: 10px; opacity: 0.95;">Turing Institute researchers announce breakthrough that could reshape every industry.</p>
+                <div class="meta" style="margin-top: 15px; color: #ddd;">
+                    By Elena Voss • 2 hours ago
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar Stories + Ad -->
+        <div class="sidebar">
+            <div>
+                <h3 class="section-header">Top Stories</h3>
+                <div style="margin-bottom: 22px;">
+                    <h4 style="margin-bottom: 6px;">Markets Surge as Fed Signals Rate Cut</h4>
+                    <div class="meta">Finance • 45 min ago</div>
+                </div>
+                <div style="margin-bottom: 22px;">
+                    <h4 style="margin-bottom: 6px;">Election 2026: New Polls Show Tight Race</h4>
+                    <div class="meta">Politics • 1 hour ago</div>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 6px;">Champions League: Real Madrid Advances Dramatically</h4>
+                    <div class="meta">Sports • 3 hours ago</div>
+                </div>
+            </div>
+            
+            <!-- Sidebar Advertisement -->
+            <div class="sidebar-ad">
+                <strong>SPONSORED</strong><br>
+                Premium Investment Opportunities<br>
+                <small>— Learn More —</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN NEWS SECTION -->
+    <div class="main-content">
+        <!-- Left Column - News Grid -->
+        <div>
+            <h2 class="section-header">Latest News</h2>
+            <div class="news-grid">
+                <!-- News Card 1 -->
+                <div class="news-card">
+                    <img src="https://picsum.photos/id/201/600/400" alt="Finance">
+                    <div class="category-label" style="margin-top: 12px;">Finance</div>
+                    <h3>Global Markets React to New Trade Agreements</h3>
+                    <p style="margin-top: 8px; color: #555;">Analysts predict sustained growth in emerging markets.</p>
+                    <div class="meta">4 hours ago • By Michael Chen</div>
+                </div>
+                
+                <!-- News Card 2 -->
+                <div class="news-card">
+                    <img src="https://picsum.photos/id/870/600/400" alt="Health">
+                    <div class="category-label" style="margin-top: 12px;">Health</div>
+                    <h3>New Breakthrough in Cancer Treatment Shows Promise</h3>
+                    <p style="margin-top: 8px; color: #555;">Clinical trials demonstrate 40% improvement in survival rates.</p>
+                    <div class="meta">5 hours ago • By Dr. Sarah Patel</div>
+                </div>
+                
+                <!-- News Card 3 -->
+                <div class="news-card">
+                    <img src="https://picsum.photos/id/133/600/400" alt="Politics">
+                    <div class="category-label" style="margin-top: 12px;">Politics</div>
+                    <h3>Supreme Court to Hear Landmark Case on Tech Regulation</h3>
+                    <p style="margin-top: 8px; color: #555;">Decision expected to shape digital policy for decades.</p>
+                    <div class="meta">Yesterday • By James Whitaker</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Column - More Stories + Ad -->
+        <div>
+            <h2 class="section-header">In-Depth</h2>
+            
+            <div style="margin-bottom: 35px;">
+                <div class="category-label">Entertainment</div>
+                <h3>Oppenheimer Director Announces New Historical Epic</h3>
+                <div class="meta">Entertainment • 6 hours ago</div>
+            </div>
+            
+            <div style="margin-bottom: 35px;">
+                <div class="category-label">Technology</div>
+                <h3>Quantum Computing Firm Raises $2.4 Billion</h3>
+                <div class="meta">Technology • Today</div>
+            </div>
+            
+            <!-- Another Ad -->
+            <div class="sidebar-ad" style="min-height: 180px;">
+                <strong>ADVERTISEMENT</strong><br>
+                Future-Proof Your Portfolio
+            </div>
+            
+            <h2 class="section-header" style="margin-top: 50px;">Sports</h2>
+            <div>
+                <p><strong>NBA Playoffs:</strong> Celtics vs Warriors — Game 7 Preview</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>Turing News</h4>
+                <p>Delivering intelligent journalism since 2025.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Sections</h4>
+                <a href="#">World News</a>
+                <a href="#">Finance</a>
+                <a href="#">Technology</a>
+                <a href="#">Politics</a>
+                <a href="#">Sports</a>
+                <a href="#">Health &amp; Science</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <a href="#">About Us</a>
+                <a href="#">Careers</a>
+                <a href="#">Contact</a>
+                <a href="#">Press</a>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Settings</a>
+                <a href="#">Do Not Sell My Info</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div>&copy; 2026 Turing News. All Rights Reserved.</div>
+            <div>
+                Follow us: 
+                <a href="#" style="margin-left: 12px;">𝕏</a> 
+                <a href="#" style="margin-left: 12px;">LinkedIn</a>
+            </div>
+            <div>Made for thinkers, leaders, and visionaries.</div>
+        </div>
+    </footer>
+
+    <script>
+        // Future JavaScript functionality can be added here
+        console.log('%cTuring News Landing Page Loaded', 'color: #003366; font-weight: bold;');
+    </script>
+</body>
+</html>

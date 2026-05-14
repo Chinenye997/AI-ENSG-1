@@ -1,0 +1,1327 @@
+/* 
+    ============================================
+    GLOBAL AIRLINES STYLESHEET
+    ============================================
+    File: css/styles.css
+    Description: Complete stylesheet for Global Airlines landing page
+    Author: Development Team
+    Date: May 2026
+    
+    IDE: VS Code
+    
+    Design Philosophy:
+    - Hybrid of British Airways (premium cards, elegant spacing)
+      and Delta Air (clean minimalism, functional booking widget)
+    - Yankee Blue (#0A3161) and Yankee Red (#B31942) theme
+    - Light color scheme throughout (no dark colors)
+    - Fully responsive (mobile-first approach)
+    
+    Table of Contents:
+    1. CSS Variables & Reset
+    2. Base Typography
+    3. Header & Navigation
+    4. Hero Section & Booking Widget
+    5. Trust Bar
+    6. Destinations Section
+    7. Services Section
+    8. Newsletter Section
+    9. Footer
+    10. Responsive Media Queries
+    ============================================
+*/
+
+/* ============================================
+   1. CSS VARIABLES & RESET
+   ============================================ */
+:root {
+    /* Yankee Blue - Primary brand color (US Flag dark blue) */
+    --yankee-blue: #0A3161;
+    --yankee-blue-light: #1a4a8a;
+    --yankee-blue-pale: #e8f0f8;
+    
+    /* Yankee Red - Accent color (US Flag red) */
+    --yankee-red: #B31942;
+    --yankee-red-light: #d43d5e;
+    --yankee-red-pale: #fde8ec;
+    
+    /* Neutral palette - Light scheme (no dark colors) */
+    --white: #ffffff;
+    --off-white: #fafbfc;
+    --light-gray: #f5f7fa;
+    --medium-gray: #e2e8f0;
+    --text-gray: #64748b;
+    --text-dark: #1e293b;
+    --text-medium: #475569;
+    
+    /* Typography */
+    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    
+    /* Spacing scale */
+    --space-xs: 0.5rem;    /* 8px */
+    --space-sm: 1rem;      /* 16px */
+    --space-md: 1.5rem;    /* 24px */
+    --space-lg: 2rem;      /* 32px */
+    --space-xl: 3rem;      /* 48px */
+    --space-2xl: 4rem;     /* 64px */
+    --space-3xl: 6rem;     /* 96px */
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(10, 49, 97, 0.05);
+    --shadow-md: 0 4px 6px rgba(10, 49, 97, 0.07);
+    --shadow-lg: 0 10px 25px rgba(10, 49, 97, 0.1);
+    --shadow-xl: 0 20px 40px rgba(10, 49, 97, 0.12);
+    
+    /* Border radius */
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.25s ease;
+    --transition-slow: 0.4s ease;
+}
+
+/* CSS Reset - Normalize browser defaults */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-primary);
+    color: var(--text-dark);
+    background-color: var(--white);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Remove default list styling */
+ul, ol {
+    list-style: none;
+}
+
+/* Remove default link styling */
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color var(--transition-base);
+}
+
+/* Remove default button styling */
+button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+/* Image defaults */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Form element defaults */
+input, select {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+/* ============================================
+   2. BASE TYPOGRAPHY
+   ============================================ */
+h1, h2, h3, h4 {
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text-dark);
+}
+
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
+h3 { font-size: clamp(1.125rem, 2vw, 1.5rem); }
+h4 { font-size: 1.125rem; }
+
+p {
+    color: var(--text-medium);
+}
+
+/* ============================================
+   3. HEADER & NAVIGATION
+   ============================================
+   Sticky header with white background
+   Logo positioned top-left per requirements
+   ============================================ */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: var(--white);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition-base);
+}
+
+.header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--space-md);
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Logo wrapper - top-left positioning */
+.logo-wrapper {
+    flex-shrink: 0;
+}
+
+.logo-link {
+    display: inline-block;
+}
+
+.ga-logo {
+    width: 160px;
+    height: 48px;
+    transition: transform var(--transition-base);
+}
+
+.logo-link:hover .ga-logo {
+    transform: scale(1.02);
+}
+
+/* Main Navigation */
+.main-nav {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-list {
+    display: flex;
+    gap: var(--space-lg);
+    align-items: center;
+}
+
+.nav-link {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--text-medium);
+    padding: var(--space-xs) 0;
+    position: relative;
+    transition: color var(--transition-base);
+}
+
+/* Active state & hover underline */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--yankee-red);
+    transition: width var(--transition-base);
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--yankee-blue);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* Utility Navigation (Login, Search) */
+.utility-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.utility-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--yankee-blue);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    transition: background-color var(--transition-base);
+}
+
+.utility-link:hover {
+    background-color: var(--yankee-blue-pale);
+}
+
+.utility-link i {
+    font-size: 1.125rem;
+}
+
+/* Mobile Menu Toggle (hidden on desktop) */
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: var(--space-xs);
+}
+
+.hamburger-line {
+    width: 24px;
+    height: 2px;
+    background-color: var(--yankee-blue);
+    border-radius: 2px;
+    transition: all var(--transition-base);
+}
+
+/* ============================================
+   4. HERO SECTION & BOOKING WIDGET
+   ============================================
+   Full-viewport hero with background imagery
+   Booking widget overlay (Delta-inspired)
+   ============================================ */
+.hero-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 72px; /* Account for fixed header */
+    overflow: hidden;
+}
+
+/* Background image with gradient overlay */
+.hero-background {
+    position: absolute;
+    inset: 0;
+    background: 
+        linear-gradient(135deg, rgba(10, 49, 97, 0.85) 0%, rgba(10, 49, 97, 0.6) 50%, rgba(179, 25, 66, 0.3) 100%),
+        url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1920&h=1080&fit=crop') center/cover no-repeat;
+    z-index: 1;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(10, 49, 97, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+}
+
+/* Hero content container */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    width: 100%;
+    padding: var(--space-xl) var(--space-md);
+    text-align: center;
+}
+
+.hero-title {
+    color: var(--white);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-sm);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.hero-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: clamp(1rem, 2vw, 1.375rem);
+    font-weight: 400;
+    margin-bottom: var(--space-xl);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ============================================
+   BOOKING WIDGET STYLES
+   ============================================ */
+.booking-widget {
+    background-color: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+/* Widget Tabs */
+.widget-tabs {
+    display: flex;
+    background-color: var(--light-gray);
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.widget-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    padding: var(--space-md) var(--space-sm);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-gray);
+    border-bottom: 3px solid transparent;
+    transition: all var(--transition-base);
+}
+
+.widget-tab i {
+    font-size: 1rem;
+}
+
+.widget-tab:hover {
+    color: var(--yankee-blue);
+    background-color: var(--white);
+}
+
+.widget-tab.active {
+    color: var(--yankee-blue);
+    background-color: var(--white);
+    border-bottom-color: var(--yankee-red);
+}
+
+/* Widget Panels */
+.widget-panel {
+    display: none;
+    padding: var(--space-lg);
+    animation: fadeIn 0.3s ease;
+}
+
+.widget-panel.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.panel-placeholder {
+    text-align: center;
+    color: var(--text-gray);
+    padding: var(--space-xl);
+}
+
+/* Trip Type Selector */
+.trip-type-selector {
+    display: flex;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.trip-option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    cursor: pointer;
+    font-size: 0.9375rem;
+    color: var(--text-medium);
+    transition: color var(--transition-base);
+}
+
+.trip-option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--yankee-blue);
+    cursor: pointer;
+}
+
+.trip-option:hover {
+    color: var(--yankee-blue);
+}
+
+/* Flight Search Form */
+.flight-search-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr 1fr 1fr 1fr;
+    gap: var(--space-sm);
+    align-items: end;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.form-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: var(--space-sm);
+    color: var(--yankee-blue);
+    font-size: 0.875rem;
+    z-index: 1;
+}
+
+.form-input {
+    width: 100%;
+    padding: var(--space-sm) var(--space-sm) var(--space-sm) 2.5rem;
+    border: 2px solid var(--medium-gray);
+    border-radius: var(--radius-md);
+    font-size: 0.9375rem;
+    color: var(--text-dark);
+    background-color: var(--white);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--yankee-blue);
+    box-shadow: 0 0 0 3px rgba(10, 49, 97, 0.1);
+}
+
+.form-input::placeholder {
+    color: var(--text-gray);
+}
+
+.form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 2rem;
+}
+
+/* Swap button */
+.swap-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--yankee-blue-pale);
+    color: var(--yankee-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-xs);
+    transition: all var(--transition-base);
+}
+
+.swap-btn:hover {
+    background-color: var(--yankee-blue);
+    color: var(--white);
+    transform: rotate(180deg);
+}
+
+/* Search Button */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-search {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-xl);
+    background-color: var(--yankee-red);
+    color: var(--white);
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-search:hover {
+    background-color: var(--yankee-red-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-search:active {
+    transform: translateY(0);
+}
+
+/* ============================================
+   5. TRUST BAR
+   ============================================
+   Stats bar below hero for credibility
+   ============================================ */
+.trust-bar {
+    background-color: var(--yankee-blue);
+    padding: var(--space-lg) var(--space-md);
+}
+
+.trust-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-lg);
+    text-align: center;
+}
+
+.trust-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+    color: var(--white);
+}
+
+.trust-item i {
+    font-size: 1.75rem;
+    color: var(--yankee-red-light);
+    margin-bottom: var(--space-xs);
+}
+
+.trust-number {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--white);
+}
+
+.trust-label {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+}
+
+/* ============================================
+   6. DESTINATIONS SECTION
+   ============================================
+   Card-based grid (British Airways inspired)
+   Light backgrounds, elegant cards
+   ============================================ */
+.destinations-section,
+.services-section {
+    padding: var(--space-3xl) var(--space-md);
+}
+
+.section-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: var(--space-xl);
+}
+
+.section-title {
+    color: var(--yankee-blue);
+    margin-bottom: var(--space-sm);
+}
+
+.section-subtitle {
+    font-size: 1.125rem;
+    color: var(--text-gray);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Destinations Grid */
+.destinations-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+}
+
+/* Destination Card */
+.destination-card {
+    background-color: var(--white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+    border: 1px solid var(--medium-gray);
+}
+
+.destination-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+}
+
+.card-image {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.destination-card:hover .card-image img {
+    transform: scale(1.08);
+}
+
+/* Card Badge */
+.card-badge {
+    position: absolute;
+    top: var(--space-sm);
+    left: var(--space-sm);
+    background-color: var(--yankee-red);
+    color: var(--white);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+}
+
+/* Card Content */
+.card-content {
+    padding: var(--space-md);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 2px;
+}
+
+.card-country {
+    font-size: 0.9375rem;
+    color: var(--text-gray);
+    margin-bottom: var(--space-md);
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--medium-gray);
+}
+
+.card-price {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--yankee-blue);
+}
+
+.card-link {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--yankee-red);
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    transition: gap var(--transition-base);
+}
+
+.card-link:hover {
+    gap: var(--space-sm);
+}
+
+/* Section CTA Button */
+.section-cta {
+    text-align: center;
+}
+
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-sm) var(--space-xl);
+    background-color: transparent;
+    color: var(--yankee-blue);
+    font-size: 1rem;
+    font-weight: 600;
+    border: 2px solid var(--yankee-blue);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+}
+
+.btn-secondary:hover {
+    background-color: var(--yankee-blue);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* ============================================
+   7. SERVICES SECTION
+   ============================================
+   Icon-based feature grid
+   Light gray background for contrast
+   ============================================ */
+.services-section {
+    background-color: var(--off-white);
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+}
+
+.service-card {
+    background-color: var(--white);
+    padding: var(--space-xl) var(--space-lg);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--medium-gray);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.service-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.service-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto var(--space-md);
+    background-color: var(--yankee-blue-pale);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.service-icon i {
+    font-size: 1.5rem;
+    color: var(--yankee-blue);
+}
+
+.service-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: var(--space-sm);
+}
+
+.service-desc {
+    font-size: 0.9375rem;
+    color: var(--text-gray);
+    line-height: 1.6;
+}
+
+/* ============================================
+   8. NEWSLETTER SECTION
+   ============================================
+   CTA section with Yankee Red accent
+   ============================================ */
+.newsletter-section {
+    background-color: var(--yankee-blue-pale);
+    padding: var(--space-3xl) var(--space-md);
+}
+
+.newsletter-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.newsletter-title {
+    color: var(--yankee-blue);
+    margin-bottom: var(--space-sm);
+}
+
+.newsletter-desc {
+    font-size: 1.125rem;
+    color: var(--text-medium);
+    margin-bottom: var(--space-xl);
+}
+
+.newsletter-form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.newsletter-input-group {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+}
+
+.newsletter-input {
+    flex: 1;
+    padding: var(--space-sm) var(--space-md);
+    border: 2px solid var(--medium-gray);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    color: var(--text-dark);
+    background-color: var(--white);
+    transition: border-color var(--transition-base);
+}
+
+.newsletter-input:focus {
+    outline: none;
+    border-color: var(--yankee-blue);
+}
+
+.btn-newsletter {
+    padding: var(--space-sm) var(--space-lg);
+    background-color: var(--yankee-red);
+    color: var(--white);
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: var(--radius-md);
+    white-space: nowrap;
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-newsletter:hover {
+    background-color: var(--yankee-red-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.newsletter-consent {
+    font-size: 0.8125rem;
+    color: var(--text-gray);
+}
+
+.newsletter-consent a {
+    color: var(--yankee-blue);
+    text-decoration: underline;
+}
+
+/* ============================================
+   9. FOOTER
+   ============================================
+   Light color scheme (no dark colors)
+   Multiple columns, social links, legal
+   ============================================ */
+.site-footer {
+    background-color: var(--light-gray);
+    border-top: 1px solid var(--medium-gray);
+    padding-top: var(--space-3xl);
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-md);
+}
+
+/* Footer Top: Link Columns */
+.footer-top {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-xl);
+    margin-bottom: var(--space-2xl);
+}
+
+.footer-heading {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--yankee-blue);
+    margin-bottom: var(--space-md);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.footer-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.footer-link {
+    font-size: 0.9375rem;
+    color: var(--text-medium);
+    transition: color var(--transition-base);
+}
+
+.footer-link:hover {
+    color: var(--yankee-red);
+}
+
+/* Footer Middle: Apps & Social */
+.footer-middle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-xl) 0;
+    border-top: 1px solid var(--medium-gray);
+    border-bottom: 1px solid var(--medium-gray);
+    margin-bottom: var(--space-xl);
+}
+
+/* App Store Badges */
+.app-badges {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.app-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-md);
+    background-color: var(--yankee-blue);
+    color: var(--white);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: background-color var(--transition-base);
+}
+
+.app-badge:hover {
+    background-color: var(--yankee-blue-light);
+}
+
+.app-badge i {
+    font-size: 1.25rem;
+}
+
+/* Social Media Links */
+.social-links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.social-label {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-gray);
+    margin-right: var(--space-sm);
+}
+
+.social-link {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--white);
+    color: var(--yankee-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--medium-gray);
+}
+
+.social-link:hover {
+    background-color: var(--yankee-blue);
+    color: var(--white);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Footer Bottom: Legal & Copyright */
+.footer-bottom {
+    padding-bottom: var(--space-xl);
+    text-align: center;
+}
+
+.legal-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-md);
+}
+
+.legal-link {
+    font-size: 0.875rem;
+    color: var(--text-gray);
+    transition: color var(--transition-base);
+}
+
+.legal-link:hover {
+    color: var(--yankee-red);
+}
+
+.legal-separator {
+    color: var(--medium-gray);
+    font-size: 0.875rem;
+}
+
+.copyright {
+    margin-bottom: var(--space-md);
+}
+
+.copyright p {
+    font-size: 0.875rem;
+    color: var(--text-gray);
+}
+
+.copyright-small {
+    font-size: 0.75rem;
+    color: var(--text-gray);
+    margin-top: var(--space-xs);
+}
+
+/* Cookie Notice */
+.cookie-notice {
+    background-color: var(--yankee-blue-pale);
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--radius-md);
+    padding: var(--space-sm) var(--space-md);
+    margin-top: var(--space-md);
+}
+
+.cookie-notice p {
+    font-size: 0.8125rem;
+    color: var(--text-medium);
+}
+
+.cookie-notice i {
+    color: var(--yankee-red);
+    margin-right: var(--space-xs);
+}
+
+.cookie-notice a {
+    color: var(--yankee-blue);
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+/* ============================================
+   10. RESPONSIVE MEDIA QUERIES
+   ============================================
+   Mobile-first responsive design
+   ============================================ */
+
+/* Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+    .destinations-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .swap-btn {
+        display: none;
+    }
+    
+    .trust-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-md);
+    }
+    
+    .footer-top {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+    /* Header adjustments */
+    .header-container {
+        height: 64px;
+    }
+    
+    .main-nav {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background-color: var(--white);
+        box-shadow: var(--shadow-lg);
+        padding: var(--space-md);
+    }
+    
+    .main-nav.nav-open {
+        display: block;
+    }
+    
+    .nav-list {
+        flex-direction: column;
+        gap: var(--space-sm);
+        align-items: flex-start;
+    }
+    
+    .mobile-menu-toggle {
+        display: flex;
+    }
+    
+    .utility-nav {
+        display: none; /* Simplified mobile nav */
+    }
+    
+    /* Hero adjustments */
+    .hero-section {
+        min-height: auto;
+        padding: calc(64px + var(--space-xl)) var(--space-md) var(--space-xl);
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    /* Booking widget mobile */
+    .widget-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .widget-tab {
+        flex: 1 1 50%;
+        font-size: 0.875rem;
+        padding: var(--space-sm);
+    }
+    
+    .widget-panel {
+        padding: var(--space-md);
+    }
+    
+    .trip-type-selector {
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+    }
+    
+    .form-actions {
+        justify-content: stretch;
+    }
+    
+    .btn-search {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* Grid adjustments */
+    .destinations-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .trust-container {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-md);
+    }
+    
+    /* Footer mobile */
+    .footer-top {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+    }
+    
+    .footer-middle {
+        flex-direction: column;
+        gap: var(--space-lg);
+    }
+    
+    .newsletter-input-group {
+        flex-direction: column;
+    }
+    
+    .btn-newsletter {
+        width: 100%;
+    }
+}
+
+/* Small mobile (max-width: 480px) */
+@media (max-width: 480px) {
+    .trust-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .ga-logo {
+        width: 130px;
+        height: 40px;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .widget-tab span {
+        display: none; /* Show icons only on very small screens */
+    }
+    
+    .widget-tab i {
+        font-size: 1.25rem;
+    }
+}
+
+/* ============================================
+   ACCESSIBILITY ENHANCEMENTS
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+/* Focus visible styles for keyboard navigation */
+:focus-visible {
+    outline: 3px solid var(--yankee-red);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
+/* Skip link for screen readers */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--yankee-blue);
+    color: var(--white);
+    padding: 8px;
+    z-index: 100;
+    transition: top 0.3s;
+}
+
+.skip-link:focus {
+    top: 0;
+}

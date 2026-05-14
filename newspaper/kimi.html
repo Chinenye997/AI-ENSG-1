@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turing News - Breaking News, Business, Finance & Technology</title>
+    
+    <!-- 
+    ============================================
+    TURING NEWS - LANDING PAGE
+    ============================================
+    DESIGN PHILOSOPHY:
+    - Classic broadsheet newspaper aesthetic
+    - Strong typographic hierarchy (serif for headlines, sans-serif for UI)
+    - Grid-based layout with clear content sections
+    - Prominent advertising real estate
+    - Mobile-first responsive approach
+    
+    ENGINEERING NOTES:
+    - CSS Grid used for main layout containers
+    - Flexbox used for component-level alignment
+    - BEM naming convention for CSS classes
+    - CSS custom properties for theming consistency
+    ============================================
+    -->
+    
+    <style>
+        /* ============================================
+           CSS CUSTOM PROPERTIES (DESIGN TOKENS)
+           ============================================
+           Modify these values to retheme the entire site.
+           Recommended for A/B testing and brand updates.
+        ============================================ */
+        :root {
+            /* Typography */
+            --font-serif: 'Georgia', 'Times New Roman', serif;
+            --font-sans: 'Helvetica Neue', Arial, sans-serif;
+            --font-mono: 'Courier New', monospace;
+            
+            /* Colors - Classic newspaper palette */
+            --color-primary: #000000;
+            --color-secondary: #333333;
+            --color-accent: #0066cc;      /* Link blue */
+            --color-muted: #666666;
+            --color-light: #999999;
+            --color-border: #d1d1d1;
+            --color-border-dark: #000000;
+            --color-bg: #ffffff;
+            --color-bg-alt: #f5f5f5;
+            --color-bg-ad: #e8e8e8;       /* Ad placeholder background */
+            
+            /* Spacing Scale */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-xxl: 48px;
+            
+            /* Layout */
+            --max-width: 1200px;
+            --sidebar-width: 300px;
+            --gutter: 20px;
+            
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-base: 0.25s ease;
+        }
+
+        /* ============================================
+           RESET & BASE STYLES
+           ============================================
+           Minimal reset to ensure cross-browser consistency
+           while preserving useful defaults.
+        ============================================ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--color-primary);
+            background-color: var(--color-bg);
+            line-height: 1.5;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            color: var(--color-primary);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+
+        a:hover {
+            color: var(--color-accent);
+        }
+
+        /* ============================================
+           UTILITY CLASSES
+           ============================================
+           Reusable helper classes for rapid layout.
+        ============================================ */
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* ============================================
+           ADVERTISEMENT COMPONENTS
+           ============================================
+           Standardized ad units. 
+           NOTE: Replace placeholder content with actual 
+           ad serving code (Google Ad Manager, etc.)
+        ============================================ */
+        
+        /* 
+         * AD UNIT: Leaderboard (728x90 or responsive)
+         * Position: Above hero section
+         * Priority: High visibility, above the fold
+         */
+        .ad-unit {
+            background-color: var(--color-bg-ad);
+            border: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ad-unit__label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-light);
+            padding: 2px 6px;
+            background: rgba(255,255,255,0.8);
+        }
+
+        .ad-unit--leaderboard {
+            width: 100%;
+            min-height: 90px;
+            margin-bottom: var(--space-lg);
+        }
+
+        /* 
+         * AD UNIT: Medium Rectangle (300x250)
+         * Position: Sidebar
+         * Priority: Standard sidebar inventory
+         */
+        .ad-unit--medium-rect {
+            width: 100%;
+            min-height: 250px;
+            margin-bottom: var(--space-lg);
+        }
+
+        /* 
+         * AD UNIT: Half Page (300x600)
+         * Position: Sidebar sticky
+         * Priority: Premium inventory
+         */
+        .ad-unit--half-page {
+            width: 100%;
+            min-height: 600px;
+            margin-bottom: var(--space-lg);
+        }
+
+        .ad-unit__content {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--color-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* ============================================
+           HEADER & MASTHEAD
+           ============================================
+           Newspaper masthead with date, weather, and 
+           edition info. Classic WSJ-style presentation.
+        ============================================ */
+        .header {
+            border-bottom: 3px solid var(--color-border-dark);
+            padding: var(--space-md) 0;
+            margin-bottom: var(--space-md);
+        }
+
+        .header__top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--color-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-sm);
+            padding-bottom: var(--space-sm);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .header__meta {
+            display: flex;
+            gap: var(--space-lg);
+        }
+
+        .header__edition {
+            font-weight: 600;
+        }
+
+        .header__masthead {
+            text-align: center;
+            padding: var(--space-lg) 0;
+        }
+
+        .header__logo {
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1;
+            margin-bottom: var(--space-xs);
+        }
+
+        .header__tagline {
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            color: var(--color-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================
+           Primary section navigation.
+           Sticky on scroll for persistent access.
+           TODO: Implement mobile hamburger menu
+        ============================================ */
+        .nav {
+            border-bottom: 2px solid var(--color-primary);
+            position: sticky;
+            top: 0;
+            background: var(--color-bg);
+            z-index: 100;
+        }
+
+        .nav__list {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+        }
+
+        .nav__item {
+            position: relative;
+        }
+
+        .nav__link {
+            display: block;
+            padding: var(--space-sm) var(--space-md);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 3px solid transparent;
+            transition: border-color var(--transition-fast);
+        }
+
+        .nav__link:hover,
+        .nav__link--active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+
+        /* ============================================
+           MAIN LAYOUT GRID
+           ============================================
+           Two-column layout: Main content + Sidebar
+           Sidebar contains ads and secondary content.
+           Grid collapses to single column on mobile.
+        ============================================ */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr var(--sidebar-width);
+            gap: var(--gutter);
+            margin-top: var(--space-lg);
+        }
+
+        .main-content {
+            min-width: 0; /* Prevent grid blowout */
+        }
+
+        .sidebar {
+            min-width: 0;
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================
+           Top stories with dominant visual hierarchy.
+           Lead story gets largest treatment.
+        ============================================ */
+        .hero {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-lg);
+            padding-bottom: var(--space-xl);
+            margin-bottom: var(--space-xl);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .hero__lead {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero__headline {
+            font-family: var(--font-serif);
+            font-size: 2.25rem;
+            line-height: 1.1;
+            margin-bottom: var(--space-sm);
+            font-weight: 700;
+        }
+
+        .hero__headline a:hover {
+            color: var(--color-accent);
+        }
+
+        .hero__deck {
+            font-size: 1.1rem;
+            color: var(--color-secondary);
+            line-height: 1.4;
+            margin-bottom: var(--space-md);
+        }
+
+        .hero__meta {
+            font-size: 0.75rem;
+            color: var(--color-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .hero__image {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            margin-bottom: var(--space-md);
+            background-color: var(--color-bg-alt);
+        }
+
+        .hero__secondary {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+
+        .hero__sub-story {
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .hero__sub-story:last-child {
+            border-bottom: none;
+        }
+
+        .hero__sub-headline {
+            font-family: var(--font-serif);
+            font-size: 1.15rem;
+            line-height: 1.2;
+            margin-bottom: var(--space-xs);
+            font-weight: 600;
+        }
+
+        .hero__sub-deck {
+            font-size: 0.9rem;
+            color: var(--color-secondary);
+            line-height: 1.4;
+        }
+
+        /* ============================================
+           SECTION HEADERS
+           ============================================
+           Consistent styling for category sections.
+        ============================================ */
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--space-md);
+            padding-bottom: var(--space-xs);
+            border-bottom: 2px solid var(--color-primary);
+        }
+
+        .section-header__title {
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-right: auto;
+        }
+
+        .section-header__link {
+            font-size: 0.75rem;
+            color: var(--color-muted);
+            text-transform: uppercase;
+        }
+
+        /* ============================================
+           NEWS GRID (SECTION LAYOUTS)
+           ============================================
+           Reusable grid for category sections.
+           3-column on desktop, stacks on mobile.
+        ============================================ */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xxl);
+        }
+
+        .news-grid--2col {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .news-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-card__image {
+            width: 100%;
+            aspect-ratio: 3 / 2;
+            object-fit: cover;
+            margin-bottom: var(--space-sm);
+            background-color: var(--color-bg-alt);
+        }
+
+        .news-card__category {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-accent);
+            margin-bottom: var(--space-xs);
+        }
+
+        .news-card__headline {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            line-height: 1.25;
+            margin-bottom: var(--space-xs);
+            font-weight: 600;
+        }
+
+        .news-card__summary {
+            font-size: 0.9rem;
+            color: var(--color-secondary);
+            line-height: 1.4;
+        }
+
+        .news-card__meta {
+            font-size: 0.75rem;
+            color: var(--color-light);
+            margin-top: auto;
+            padding-top: var(--space-sm);
+        }
+
+        /* ============================================
+           SIDEBAR COMPONENTS
+           ============================================
+           Trending topics, newsletter signup, and 
+           additional ad placements.
+        ============================================ */
+        .sidebar__widget {
+            margin-bottom: var(--space-xl);
+            padding-bottom: var(--space-lg);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .sidebar__widget-title {
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--space-md);
+            padding-bottom: var(--space-xs);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .trending-list {
+            list-style: none;
+            counter-reset: trending;
+        }
+
+        .trending-list__item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            padding: var(--space-sm) 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .trending-list__item::before {
+            counter-increment: trending;
+            content: counter(trending);
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-light);
+            line-height: 1;
+            min-width: 24px;
+        }
+
+        .trending-list__link {
+            font-family: var(--font-serif);
+            font-size: 0.95rem;
+            line-height: 1.3;
+            font-weight: 600;
+        }
+
+        /* Newsletter widget */
+        .newsletter {
+            background: var(--color-bg-alt);
+            padding: var(--space-lg);
+            border: 1px solid var(--color-border);
+        }
+
+        .newsletter__text {
+            font-size: 0.9rem;
+            margin-bottom: var(--space-md);
+            color: var(--color-secondary);
+        }
+
+        .newsletter__input {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--color-border);
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        .newsletter__button {
+            width: 100%;
+            padding: var(--space-sm);
+            background: var(--color-primary);
+            color: var(--color-bg);
+            border: none;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: background var(--transition-fast);
+        }
+
+        .newsletter__button:hover {
+            background: var(--color-secondary);
+        }
+
+        /* ============================================
+           MARKET TICKER
+           ============================================
+           Finance section header with live market data.
+           TODO: Integrate WebSocket or API for real-time data
+        ============================================ */
+        .market-ticker {
+            display: flex;
+            gap: var(--space-lg);
+            padding: var(--space-sm) 0;
+            margin-bottom: var(--space-lg);
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+            font-size: 0.8rem;
+            overflow-x: auto;
+        }
+
+        .market-ticker__item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            white-space: nowrap;
+        }
+
+        .market-ticker__name {
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .market-ticker__value {
+            font-family: var(--font-mono);
+        }
+
+        .market-ticker__change--up {
+            color: #008000;
+        }
+
+        .market-ticker__change--down {
+            color: #cc0000;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================
+           Comprehensive footer with sitemap, legal,
+           and secondary navigation.
+        ============================================ */
+        .footer {
+            background: var(--color-bg-alt);
+            border-top: 3px solid var(--color-primary);
+            margin-top: var(--space-xxl);
+            padding: var(--space-xxl) 0 var(--space-lg);
+        }
+
+        .footer__grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        .footer__column-title {
+            font-family: var(--font-sans);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--space-md);
+        }
+
+        .footer__list {
+            list-style: none;
+        }
+
+        .footer__item {
+            margin-bottom: var(--space-xs);
+        }
+
+        .footer__link {
+            font-size: 0.85rem;
+            color: var(--color-secondary);
+        }
+
+        .footer__link:hover {
+            color: var(--color-accent);
+        }
+
+        .footer__bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: var(--space-lg);
+            border-top: 1px solid var(--color-border);
+            font-size: 0.75rem;
+            color: var(--color-muted);
+        }
+
+        .footer__legal {
+            display: flex;
+            gap: var(--space-md);
+        }
+
+        /* ============================================
+           RESPONSIVE BREAKPOINTS
+           ============================================
+           Mobile-first approach with progressive enhancement.
+        ============================================ */
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--space-lg);
+            }
+            
+            .ad-unit--half-page {
+                min-height: 250px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header__logo {
+                font-size: 2.5rem;
+            }
+            
+            .hero {
+                grid-template-columns: 1fr;
+            }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .news-grid--2col {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer__grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .sidebar {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav__list {
+                justify-content: flex-start;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header__top-bar {
+                flex-direction: column;
+                gap: var(--space-xs);
+                text-align: center;
+            }
+            
+            .footer__grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer__bottom {
+                flex-direction: column;
+                gap: var(--space-sm);
+                text-align: center;
+            }
+        }
+
+        /* ============================================
+           PRINT STYLES
+           ============================================
+           Optimized for printing. Hides ads, navigation,
+           and interactive elements.
+        ============================================ */
+        @media print {
+            .ad-unit,
+            .nav,
+            .newsletter,
+            .sidebar {
+                display: none !important;
+            }
+            
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            a {
+                text-decoration: underline;
+            }
+            
+            .hero__headline {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================
+         TOP ADVERTISEMENT (LEADERBOARD)
+         ============================================
+         Slot: Above-the-fold premium inventory
+         Size: 728x90 (desktop) / 320x50 (mobile)
+         Targeting: Homepage, high CPM
+    ============================================ -->
+    <div class="container">
+        <div class="ad-unit ad-unit--leaderboard" role="complementary" aria-label="Advertisement">
+            <span class="ad-unit__label">Advertisement</span>
+            <div class="ad-unit__content">
+                Leaderboard Ad Space<br>
+                728x90 Desktop / 320x50 Mobile
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         HEADER / MASTHEAD
+         ============================================
+         Contains: Date, edition info, weather, logo
+         TODO: Integrate dynamic date/weather APIs
+    ============================================ -->
+    <header class="header">
+        <div class="container">
+            <div class="header__top-bar">
+                <div class="header__meta">
+                    <time datetime="2026-05-12">Tuesday, May 12, 2026</time>
+                    <span class="header__edition">U.S. Edition</span>
+                </div>
+                <div class="header__meta">
+                    <span>San Francisco: 62°F</span>
+                    <span>Markets: Open</span>
+                </div>
+            </div>
+            
+            <div class="header__masthead">
+                <h1 class="header__logo">Turing News</h1>
+                <p class="header__tagline">Independent Journalism for the Digital Age</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================
+         PRIMARY NAVIGATION
+         ============================================
+         Sections: News, Finance, Sports, Tech, Health, 
+         Entertainment, Politics
+         NOTE: Sticky positioning for persistent access
+    ============================================ -->
+    <nav class="nav" role="navigation" aria-label="Main navigation">
+        <div class="container">
+            <ul class="nav__list">
+                <li class="nav__item"><a href="#news" class="nav__link nav__link--active">News</a></li>
+                <li class="nav__item"><a href="#finance" class="nav__link">Finance</a></li>
+                <li class="nav__item"><a href="#sports" class="nav__link">Sports</a></li>
+                <li class="nav__item"><a href="#technology" class="nav__link">Technology</a></li>
+                <li class="nav__item"><a href="#health" class="nav__link">Health</a></li>
+                <li class="nav__item"><a href="#entertainment" class="nav__link">Entertainment</a></li>
+                <li class="nav__item"><a href="#politics" class="nav__link">Politics</a></li>
+                <li class="nav__item"><a href="#opinion" class="nav__link">Opinion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ============================================
+         MARKET TICKER
+         ============================================
+         Live market data strip below navigation.
+         TODO: Connect to financial data API (Bloomberg, 
+         Yahoo Finance, etc.)
+    ============================================ -->
+    <div class="container">
+        <div class="market-ticker" role="region" aria-label="Market indices">
+            <div class="market-ticker__item">
+                <span class="market-ticker__name">S&P 500</span>
+                <span class="market-ticker__value">5,247.83</span>
+                <span class="market-ticker__change--up">+0.42%</span>
+            </div>
+            <div class="market-ticker__item">
+                <span class="market-ticker__name">Dow</span>
+                <span class="market-ticker__value">39,412.53</span>
+                <span class="market-ticker__change--up">+0.38%</span>
+            </div>
+            <div class="market-ticker__item">
+                <span class="market-ticker__name">Nasdaq</span>
+                <span class="market-ticker__value">16,384.21</span>
+                <span class="market-ticker__change--down">-0.15%</span>
+            </div>
+            <div class="market-ticker__item">
+                <span class="market-ticker__name">10-Yr Yield</span>
+                <span class="market-ticker__value">4.42%</span>
+                <span class="market-ticker__change--up">+0.03</span>
+            </div>
+            <div class="market-ticker__item">
+                <span class="market-ticker__name">Crude Oil</span>
+                <span class="market-ticker__value">$78.45</span>
+                <span class="market-ticker__change--down">-1.2%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         MAIN CONTENT GRID
+         ============================================
+         Layout: 2/3 main content + 1/3 sidebar
+         Sidebar contains: Ads, trending, newsletter
+    ============================================ -->
+    <div class="container">
+        <div class="main-grid">
+            
+            <!-- MAIN CONTENT COLUMN -->
+            <main class="main-content" role="main">
+                
+                <!-- ============================================
+                     HERO SECTION: TOP STORIES
+                     ============================================
+                     Lead story (left, large) + Secondary stories (right)
+                     Priority: Highest editorial content
+                ============================================ -->
+                <section class="hero" aria-labelledby="hero-heading">
+                    <h2 id="hero-heading" class="sr-only">Top Stories</h2>
+                    
+                    <!-- Lead Story -->
+                    <article class="hero__lead">
+                        <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&h=450&fit=crop" 
+                             alt="Newsroom with multiple monitors displaying data" 
+                             class="hero__image"
+                             loading="eager">
+                        <div class="hero__meta">Technology • 15 min ago</div>
+                        <h3 class="hero__headline">
+                            <a href="#">AI Regulation Framework Passes Senate Committee in Historic Bipartisan Vote</a>
+                        </h3>
+                        <p class="hero__deck">
+                            Landmark legislation establishes first comprehensive federal oversight of artificial intelligence 
+                            development, requiring safety testing for models above specific compute thresholds.
+                        </p>
+                    </article>
+                    
+                    <!-- Secondary Stories -->
+                    <div class="hero__secondary">
+                        <article class="hero__sub-story">
+                            <div class="hero__meta">Finance • 32 min ago</div>
+                            <h4 class="hero__sub-headline">
+                                <a href="#">Federal Reserve Signals Potential Rate Cut as Inflation Cools</a>
+                            </h4>
+                            <p class="hero__sub-deck">
+                                Markets rally on Powell's dovish remarks at latest press conference.
+                            </p>
+                        </article>
+                        
+                        <article class="hero__sub-story">
+                            <div class="hero__meta">Politics • 1 hr ago</div>
+                            <h4 class="hero__sub-headline">
+                                <a href="#">Supreme Court to Hear Major Climate Case Challenging EPA Authority</a>
+                            </h4>
+                            <p class="hero__sub-deck">
+                                Case could redefine federal regulatory power over emissions standards.
+                            </p>
+                        </article>
+                        
+                        <article class="hero__sub-story">
+                            <div class="hero__meta">Health • 2 hrs ago</div>
+                            <h4 class="hero__sub-headline">
+                                <a href="#">New Alzheimer's Drug Shows Promise in Phase III Trials</a>
+                            </h4>
+                            <p class="hero__sub-deck">
+                                Biotech firm reports 40% reduction in cognitive decline among participants.
+                            </p>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- ============================================
+                     NEWS SECTION
+                     ============================================
+                     General news grid with 3 columns.
+                ============================================ -->
+                <section aria-labelledby="news-heading">
+                    <div class="section-header">
+                        <h2 id="news-heading" class="section-header__title">Latest News</h2>
+                        <a href="#" class="section-header__link">View All →</a>
+                    </div>
+                    
+                    <div class="news-grid">
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=400&h=267&fit=crop" 
+                                 alt="United Nations building" 
+                                 class="news-card__image"
+                                 loading="lazy">
+                            <span class="news-card__category">World</span>
+                            <h3 class="news-card__headline">
+                                <a href="#">UN Security Council Convenes Emergency Session on Regional Conflict</a>
+                            </h3>
+                            <p class="news-card__summary">
+                                Diplomatic efforts intensify as member states push for immediate ceasefire resolution.
+                            </p>
+                            <div class="news-card__meta">By Sarah Chen • 3 hrs ago</div>
+                        </article>
+                        
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=267&fit=crop" 
+                                 alt="Financial charts on screen" 
+                                 class="news-card__image"
+                                 loading="lazy">
+                            <span class="news-card__category">Business</span>
+                            <h3 class="news-card__headline">
+                                <a href="#">Tech Giants Report Mixed Q1 Earnings Amid AI Investment Surge</a>
+                            </h3>
+                            <p class="news-card__summary">
+                                Cloud revenue exceeds expectations while hardware sales show signs of slowing.
+                            </p>
+                            <div class="news-card__meta">By Michael Torres • 4 hrs ago</div>
+                        </article>
+                        
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=267&fit=crop" 
+                                 alt="Medical laboratory" 
+                                 class="news-card__image"
+                                 loading="lazy">
+                            <span class="news-card__category">Science</span>
+                            <h3 class="news-card__headline">
+                                <a href="#">CRISPR Gene Therapy Receives FDA Approval for Rare Blood Disorder</a>
+                            </h3>
+                            <p class="news-card__summary">
+                                Treatment becomes first commercially available gene-editing therapy in the United States.
+                            </p>
+                            <div class="news-card__meta">By Dr. Emily Watson • 5 hrs ago</div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- ============================================
+                     FINANCE SECTION
+                     ============================================
+                     Dedicated finance section with 2-column layout.
+                ============================================ -->
+                <section aria-labelledby="finance-heading">
+                    <div class="section-header">
+                        <h2 id="finance-heading" class="section-header__title">Finance</h2>
+                        <a href="#" class="section-header__link">View All →</a>
+                    </div>
+                    
+                    <div class="news-grid news-grid--2col">
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=267&fit=crop" 
+                                 alt="Stock exchange trading floor" 
+                                 class="news-card__image"
+                                 loading="lazy">
+                            <span class="news-card__category">Markets</span>
+                            <h3 class="news-card__headline">
+                                <a href="#">Retail Investors Flood Back Into Meme Stocks as Volatility Returns</a>
+                            </h3>
+                            <p class="news-card__summary">
+                                Trading volumes spike to highest levels since 2021 as social media sentiment drives momentum.
+                            </p>
+                            <div class="news-card__meta">By James Liu • 1 hr ago</div>
+                        </article>
+                        
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=400&h=267&fit=crop" 
+                                 alt="Cryptocurrency coins" 
+                                 class="news-card__image"
+                                 loading="lazy">
+                            <span class="news-card__category">Crypto</span>
+                            <h3 class="news-card__headline">
+                                <a href="#">SEC Approves First Spot Ethereum ETFs in Surprise Decision</a>
+                            </h3>
+                            <p class="news-card__summary">
+                                Regulatory green light opens floodgates for institutional cryptocurrency investment products.
+                            </p>
+                            <div class="news-card__meta">By Rachel Kim • 2 hrs ago</div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- ============================================
+                     SPORTS SECTION
+                     ============================================
+                ============================================ -->
+                <section aria-labelledby="sports-heading">
+                    <div class="section-header">
+                        <h2 id="sports-heading" class="section-header__title">Sports</h2>
+                        <a href="#" class="section-header__link">View All →</a>
+                    </div>
+                    
+                    <div class="news-grid">
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1461896836934- voices-6f6b7000?w=400&h=267&fit=crop" 
+                                 alt="Basketball game action" 
+                                 class="news-card__image"
+                                 loading="lazy">
+                            <span class="news-card__category">NBA</span>
+                            <h3 class="news-card__headline">
+                                <a href="#">Playoff Upset: Underdogs Take 2-0 Series Lead Over Defending Champions</a>
+                            </h3>
+                            <p class="news-card__summary">
+                                Rookie guard scores career-high 42 points in stunning road victory.
+                            </p>
+                            <div class="news-card__meta">By Marcus Johnson • 30 min ago</div>
+                        </article>
+                        
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=400&h=267&fit=crop" 
+                                 alt="Soccer stadium" 
+                                 class="news-card__image"
+                                 loading="lazy">
+                            <span class="news-card__category">Soccer</span>
+                            <h3 class="news-card__headline">
+                                <a href="#">Champions League Final Preview: Tactical Breakdown</a>
+                            </h3>
+                            <p class="news-card__summary">
+                                Analysis of key matchups ahead of Saturday's blockbuster final in Madrid.
+                            </p>
+                            <div class="news-card__meta">By Alex Rivera • 2 hrs ago</div>
+                        </article>
+                        
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=400&h=267&fit=crop" 
+                                 alt="Golf course" 
+                                 class="news-card__image"
+                                 loading="lazy">
+                            <span class="news-card__category">Golf</span>
+                            <h3 class="news-card__headline">
+                                <a href="#">Major Championship: Leaderboard Tight Heading Into Final Round</a>
+                            </h3>
+                            <p class="news-card__summary">
+                                Three players tied at the top with 18 holes remaining at historic course.
+                            </p>
+                            <div class="news-card__meta">By Tom Bradley • 4 hrs ago</div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- ============================================
+                     TECHNOLOGY SECTION
+                     ============================================
+                ============================================ -->
+                <section aria-labelledby="tech-heading">
+                    <div class="section-header">
+                        <h2 id="tech-heading" class="section-header__title">Technology</h2>
+                        <a href="#" class="section-header__link">View All →</a>
+                    </div>
+                    
+                    <div class="news-grid">
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=267&fit=crop" 
+                                 alt="AI neural network visualization" 
+                                 class="news-card__image"
+                                 loading="lazy">
+                            <span class="news-card__category">Artificial Intelligence</span>
+                            <h3 class="news-card__headline">
+                                <a href="#">Open Source AI Model Surpasses GPT-4 on Benchmark Tests</a>
+                            </h3>
+                            <p class="news-card__summary">
+                                Community-developed model demonstrates power of collaborative research over closed systems.
+                            </p>
+                            <div class="news-card__meta">By Lisa Park • 1 hr ago</div>
+                        </article>
+                        
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=267&fit=crop" 
+                                 alt="Cybersecurity lock" 
+                                 class="news-card__image"
+                                 loading="lazy">
+                            <span class="news-card__category">Cybersecurity</span>
+                            <h3 class="news-card__headline">
+                                <a href="#">Major Hospital Chain Reports Data Breach Affecting 2 Million Patients</a>
+                            </h3>
+                            <p class="news-card__summary">
+                                Ransomware attack exposes medical records; FBI launches investigation.
+                            </p>
+                            <div class="news-card__meta">By David Chen • 3 hrs ago</div>
+                        </article>
+                        
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?w=400&h=267&fit=crop" 
+                                 alt="Quantum computer" 
+                                 class="news-card__image"
+                                 loading="lazy">
+                            <span class="news-card__category">Quantum Computing</span>
+                            <h3 class="news-card__headline">
+                                <a href="#">IBM Unveils 1,000-Qubit Quantum Processor</a>
+                            </h3>
+                            <p class="news-card__summary">
+                                Milestone brings practical quantum advantage closer to commercial reality.
+                            </p>
+                            <div class="news-card__meta">By Nina Patel • 5 hrs ago</div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- ============================================
+                     HEALTH SECTION
+                     ============================================
+                ============================================ -->
+                <section aria-labelledby="health-heading">
+                    <div class="section-header">
+                        <h2 id="health-heading" class="section-header__title">Health</h2>
+                        <a href="#" class="section-header__link">View All →</a>
+                    </div>
+                    
+                    <div class="news-grid news-grid--2col">
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=267&fit=crop" 
+                                 alt="Running exercise" 
+                                 class="news-card__image"
+                                 loading="lazy">
+                            <span class="news-card__category">Wellness</span>
+                            <h3 class="news-card__headline">
+                                <a href="#">New Study Links 10,000 Daily Steps to Reduced Mortality Risk</a>
+                            </h3>
+                            <p class="news-card__summary">
+                                Longitudinal research confirms optimal step count varies by age group.
+                            </p>
+                            <div class="news-card__meta">By Dr. Amanda Foster • 2 hrs ago</div>
+                        </article>
+                        
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1585435557343-3b092031a831?w=400&h=267&fit=crop" 
+                                 alt="Pharmaceutical pills" 
+                                 class="news-card__image"
+                                 loading="lazy">
+                            <span class="news-card__category">Pharma</span>
+                            <h3 class="news-card__headline">
+                                <a href="#">Generic Drug Prices Drop 15% Following FTC Action</a>
+                            </h3>
+                            <p class="news-card__summary">
+                                Antitrust enforcement leads to increased competition in prescription market.
+                            </p>
+                            <div class="news-card__meta">By Robert Hayes • 4 hrs ago</div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- ============================================
+                     ENTERTAINMENT SECTION
+                     ============================================
+                ============================================ -->
+                <section aria-labelledby="entertainment-heading">
+                    <div class="section-header">
+                        <h2 id="entertainment-heading" class="section-header__title">Entertainment</h2>
+                        <a href="#" class="section-header__link">View All →</a>
+                    </div>
+                    
+                    <div class="news-grid">
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400&h=267&fit=crop" 
+                                 alt="Movie theater" 
+                                 class="news-card__image"
+                                 loading="lazy">
+                            <span class="news-card__category">Film</span>
+                            <h3 class="news-card__headline">
+                                <a href="#">Summer Box Office on Track for Record-Breaking Season</a>
+                            </h3>
+                            <p class="news-card__summary">
+                                Franchise sequels and original blockbusters drive ticket sales surge.
+                            </p>
+                            <div class="news-card__meta">By Jessica Moore • 1 hr ago</div>
+                        </article>
+                        
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=267&fit=crop" 
+                                 alt="Concert stage" 
+                                 class="news-card__image"
+                                 loading="lazy">
+                            <span class="news-card__category">Music</span>
+                            <h3 class="news-card__headline">
+                                <a href="#">Streaming Platforms Face Artist Payment Reform Pressure</a>
+                            </h3>
+                            <p class="news-card__summary">
+                                Congressional hearing examines royalty structures in digital music economy.
+                            </p>
+                            <div class="news-card__meta">By Chris Taylor • 3 hrs ago</div>
+                        </article>
+                        
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&h=267&fit=crop" 
+                                 alt="Television studio" 
+                                 class="news-card__image"
+                                 loading="lazy">
+                            <span class="news-card__category">Television</span>
+                            <h3 class="news-card__headline">
+                                <a href="#">Emmy Nominations: Streaming Services Dominate Major Categories</a>
+                            </h3>
+                            <p class="news-card__summary">
+                                Traditional networks struggle to compete with digital original programming.
+                            </p>
+                            <div class="news-card__meta">By Maria Gonzalez • 5 hrs ago</div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- ============================================
+                     POLITICS SECTION
+                     ============================================
+                ============================================ -->
+                <section aria-labelledby="politics-heading">
+                    <div class="section-header">
+                        <h2 id="politics-heading" class="section-header__title">Politics</h2>
+                        <a href="#" class="section-header__link">View All →</a>
+                    </div>
+                    
+                    <div class="news-grid news-grid--2col">
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=400&h=267&fit=crop" 
+                                 alt="Capitol building" 
+                                 class="news-card__image"
+                                 loading="lazy">
+                            <span class="news-card__category">Congress</span>
+                            <h3 class="news-card__headline">
+                                <a href="#">Infrastructure Bill Negotiations Stall Over Funding Dispute</a>
+                            </h3>
+                            <p class="news-card__summary">
+                                Bipartisan talks break down as deadline approaches for highway funding extension.
+                            </p>
+                            <div class="news-card__meta">By Jonathan Wells • 45 min ago</div>
+                        </article>
+                        
+                        <article class="news-card">
+                            <img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=400&h=267&fit=crop" 
+                                 alt="White House press briefing" 
+                                 class="news-card__image"
+                                 loading="lazy">
+                            <span class="news-card__category">White House</span>
+                            <h3 class="news-card__headline">
+                                <a href="#">Administration Announces New Trade Policy Framework</a>
+                            </h3>
+                            <p class="news-card__summary">
+                                Tariff adjustments target key allies as diplomatic tensions rise.
+                            </p>
+                            <div class="news-card__meta">By Katherine O'Brien • 2 hrs ago</div>
+                        </article>
+                    </div>
+                </section>
+
+            </main>
+
+            <!-- ============================================
+                 SIDEBAR COLUMN
+                 ============================================
+                 Contains: Ad units, trending topics, newsletter
+                 Sticky positioning recommended for ad visibility
+            ============================================ -->
+            <aside class="sidebar" role="complementary">
+                
+                <!-- ============================================
+                     SIDEBAR AD: Medium Rectangle
+                     ============================================
+                     Slot: Sidebar top
+                     Size: 300x250
+                ============================================ -->
+                <div class="ad-unit ad-unit--medium-rect" role="complementary" aria-label="Advertisement">
+                    <span class="ad-unit__label">Advertisement</span>
+                    <div class="ad-unit__content">
+                        Medium Rectangle<br>
+                        300x250
+                    </div>
+                </div>
+
+                <!-- ============================================
+                     TRENDING TOPICS WIDGET
+                     ============================================
+                     Dynamic list of trending stories.
+                     TODO: Connect to analytics/clickstream data
+                ============================================ -->
+                <div class="sidebar__widget">
+                    <h3 class="sidebar__widget-title">Trending Now</h3>
+                    <ol class="trending-list">
+                        <li class="trending-list__item">
+                            <a href="#" class="trending-list__link">Global Semiconductor Shortage Easing, Report Shows</a>
+                        </li>
+                        <li class="trending-list__item">
+                            <a href="#" class="trending-list__link">SpaceX Successfully Launches Next-Gen Satellite Constellation</a>
+                        </li>
+                        <li class="trending-list__item">
+                            <a href="#" class="trending-list__link">European Central Bank Holds Rates Steady</a>
+                        </li>
+                        <li class="trending-list__item">
+                            <a href="#" class="trending-list__link">Hollywood Strike Ends After 148 Days</a>
+                        </li>
+                        <li class="trending-list__item">
+                            <a href="#" class="trending-list__link">Electric Vehicle Sales Surpass 30% Market Share</a>
+                        </li>
+                    </ol>
+                </div>
+
+                <!-- ============================================
+                     SIDEBAR AD: Half Page (Premium)
+                     ============================================
+                     Slot: Sidebar middle
+                     Size: 300x600
+                     Note: High-visibility premium inventory
+                ============================================ -->
+                <div class="ad-unit ad-unit--half-page" role="complementary" aria-label="Advertisement">
+                    <span class="ad-unit__label">Advertisement</span>
+                    <div class="ad-unit__content">
+                        Half Page<br>
+                        300x600<br>
+                        Premium Inventory
+                    </div>
+                </div>
+
+                <!-- ============================================
+                     NEWSLETTER SIGNUP WIDGET
+                     ============================================
+                     Email capture for subscriber growth.
+                     TODO: Integrate with ESP (Mailchimp, etc.)
+                ============================================ -->
+                <div class="sidebar__widget">
+                    <div class="newsletter">
+                        <h3 class="sidebar__widget-title" style="border: none; padding: 0;">The Daily Turing</h3>
+                        <p class="newsletter__text">
+                            Get the most important stories delivered to your inbox every morning.
+                        </p>
+                        <form action="#" method="POST" aria-label="Newsletter signup">
+                            <label for="email" class="sr-only">Email address</label>
+                            <input type="email" 
+                                   id="email" 
+                                   name="email" 
+                                   placeholder="Enter your email" 
+                                   class="newsletter__input"
+                                   required>
+                            <button type="submit" class="newsletter__button">Subscribe</button>
+                        </form>
+                        <p style="font-size: 0.7rem; color: var(--color-light); margin-top: var(--space-sm);">
+                            By subscribing, you agree to our Privacy Policy.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- ============================================
+                     SIDEBAR AD: Medium Rectangle (Bottom)
+                     ============================================
+                     Slot: Sidebar bottom
+                     Size: 300x250
+                ============================================ -->
+                <div class="ad-unit ad-unit--medium-rect" role="complementary" aria-label="Advertisement">
+                    <span class="ad-unit__label">Advertisement</span>
+                    <div class="ad-unit__content">
+                        Medium Rectangle<br>
+                        300x250
+                    </div>
+                </div>
+
+            </aside>
+        </div>
+    </div>
+
+    <!-- ============================================
+         FOOTER
+         ============================================
+         Comprehensive footer with sitemap, legal links,
+         and social media references.
+    ============================================ -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer__grid">
+                
+                <!-- Column 1: Sections -->
+                <div class="footer__column">
+                    <h4 class="footer__column-title">Sections</h4>
+                    <ul class="footer__list">
+                        <li class="footer__item"><a href="#" class="footer__link">News</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Finance</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Sports</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Technology</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Health</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Entertainment</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Politics</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 2: Company -->
+                <div class="footer__column">
+                    <h4 class="footer__column-title">Company</h4>
+                    <ul class="footer__list">
+                        <li class="footer__item"><a href="#" class="footer__link">About Us</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Careers</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Code of Ethics</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Contact</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Advertise</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Support -->
+                <div class="footer__column">
+                    <h4 class="footer__column-title">Support</h4>
+                    <ul class="footer__list">
+                        <li class="footer__item"><a href="#" class="footer__link">Help Center</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Subscription</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Accessibility</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Sitemap</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Legal -->
+                <div class="footer__column">
+                    <h4 class="footer__column-title">Legal</h4>
+                    <ul class="footer__list">
+                        <li class="footer__item"><a href="#" class="footer__link">Privacy Policy</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Terms of Service</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Cookie Policy</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Your Privacy Choices</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer__bottom">
+                <div class="footer__legal">
+                    <span>© 2026 Turing News. All rights reserved.</span>
+                    <span>Turing News is an independent journalism organization.</span>
+                </div>
+                <div class="footer__social">
+                    <!-- Social links placeholder -->
+                    <span style="color: var(--color-muted); font-size: 0.75rem;">
+                        Follow: Twitter / X • LinkedIn • Facebook
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

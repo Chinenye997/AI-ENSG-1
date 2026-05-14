@@ -1,0 +1,450 @@
+/* ========================= */
+/* style.css */
+/* Global Airlines Styling */
+/* ========================= */
+
+
+/* ========================= */
+/* GENERAL STYLING */
+/* Applies to the entire page */
+/* ========================= */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* Styling the body element */
+body{
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fc;
+    color: #222;
+}
+
+
+/* ========================= */
+/* HEADER SECTION */
+/* Navigation Bar Styling */
+/* ========================= */
+header{
+    width: 100%;
+    padding: 20px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1d3557;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+
+/* Logo Styling */
+.logo h1{
+    color: white;
+    font-size: 30px;
+}
+
+
+/* Navigation Menu */
+nav ul{
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+
+/* Navigation Links */
+nav ul li a{
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+
+/* Hover effect for nav links */
+nav ul li a:hover{
+    color: #e63946;
+}
+
+
+/* ========================= */
+/* HERO SECTION */
+/* Large Landing Banner */
+/* ========================= */
+.hero{
+    width: 100%;
+    height: 90vh;
+
+    /* Background Image */
+    background-image: url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1600');
+
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+
+/* Dark overlay for readability */
+.overlay{
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.45);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+
+/* Hero Content */
+.hero-content{
+    color: white;
+    max-width: 700px;
+}
+
+
+/* Hero Heading */
+.hero-content h2{
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+
+/* Hero Paragraph */
+.hero-content p{
+    font-size: 20px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+
+/* Hero Buttons Container */
+.hero-buttons{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+
+/* Shared button styling */
+.hero-buttons a{
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+
+/* Primary Button */
+.btn-primary{
+    background-color: #e63946;
+    color: white;
+}
+
+
+/* Hover Effect */
+.btn-primary:hover{
+    background-color: #c71f2d;
+}
+
+
+/* Secondary Button */
+.btn-secondary{
+    background-color: white;
+    color: #1d3557;
+}
+
+
+/* Hover Effect */
+.btn-secondary:hover{
+    background-color: #dfe7f1;
+}
+
+
+/* ========================= */
+/* BOOKING SECTION */
+/* Flight Booking Form */
+/* ========================= */
+.booking-section{
+    width: 90%;
+    margin: auto;
+    background-color: white;
+    padding: 50px;
+    margin-top: -60px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+
+/* Booking Heading */
+.booking-section h2{
+    text-align: center;
+    margin-bottom: 30px;
+    color: #1d3557;
+}
+
+
+/* Booking Form Layout */
+.booking-form{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+
+/* Form Group */
+.form-group{
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Labels */
+.form-group label{
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+
+/* Inputs and Select */
+.form-group input,
+.form-group select{
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+/* Button Styling */
+.form-group button{
+    padding: 14px;
+    background-color: #1d3557;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 28px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+
+/* Hover effect */
+.form-group button:hover{
+    background-color: #e63946;
+}
+
+
+/* ========================= */
+/* DESTINATIONS SECTION */
+/* Featured Cities */
+/* ========================= */
+.destinations{
+    padding: 80px 8%;
+}
+
+
+/* Section Heading */
+.destinations h2{
+    text-align: center;
+    margin-bottom: 40px;
+    color: #1d3557;
+}
+
+
+/* Grid Layout */
+.destination-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+
+/* Card Styling */
+.card{
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+
+/* Hover Effect */
+.card:hover{
+    transform: translateY(-10px);
+}
+
+
+/* Card Images */
+.card img{
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+
+/* Card Text */
+.card h3{
+    padding: 20px 20px 10px;
+    color: #1d3557;
+}
+
+.card p{
+    padding: 0 20px 20px;
+}
+
+
+/* ========================= */
+/* SERVICES SECTION */
+/* Benefits and Features */
+/* ========================= */
+.services{
+    padding: 80px 8%;
+    background-color: #eef3f9;
+}
+
+
+/* Section Heading */
+.services h2{
+    text-align: center;
+    margin-bottom: 40px;
+    color: #1d3557;
+}
+
+
+/* Services Grid */
+.services-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+    gap: 25px;
+}
+
+
+/* Individual Service Box */
+.service-box{
+    background-color: white;
+    padding: 40px 25px;
+    text-align: center;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+
+/* Hover Effect */
+.service-box:hover{
+    transform: translateY(-8px);
+}
+
+
+/* Service Heading */
+.service-box h3{
+    margin-bottom: 15px;
+    color: #e63946;
+}
+
+
+/* ========================= */
+/* FOOTER SECTION */
+/* Footer Styling */
+/* ========================= */
+footer{
+    background-color: #dfe7f1;
+    padding-top: 50px;
+}
+
+
+/* Footer Main Layout */
+.footer-content{
+    width: 90%;
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+    gap: 40px;
+
+    padding-bottom: 40px;
+}
+
+
+/* Footer Headings */
+.footer-content h2,
+.footer-content h3{
+    color: #1d3557;
+    margin-bottom: 20px;
+}
+
+
+/* Footer Paragraph */
+.footer-content p{
+    line-height: 1.8;
+}
+
+
+/* Footer Lists */
+.footer-content ul{
+    list-style: none;
+}
+
+
+/* Footer List Items */
+.footer-content ul li{
+    margin-bottom: 12px;
+}
+
+
+/* Footer Links */
+.footer-content ul li a{
+    text-decoration: none;
+    color: #333;
+    transition: 0.3s;
+}
+
+
+/* Hover Effect */
+.footer-content ul li a:hover{
+    color: #e63946;
+}
+
+
+/* Footer Bottom Area */
+.footer-bottom{
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid #c6d3e3;
+}
+
+
+/* ========================= */
+/* RESPONSIVE DESIGN */
+/* Mobile Optimization */
+/* ========================= */
+@media(max-width: 768px){
+
+    /* Stack navbar items */
+    header{
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    /* Wrap nav menu */
+    nav ul{
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    /* Reduce hero heading size */
+    .hero-content h2{
+        font-size: 40px;
+    }
+
+    /* Stack hero buttons */
+    .hero-buttons{
+        flex-direction: column;
+    }
+}

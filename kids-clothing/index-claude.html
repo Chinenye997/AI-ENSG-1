@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TinyThreads — Premium Children's Clothing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ==============================
+       CSS VARIABLES & RESET
+    ============================== */
+    :root {
+      --primary:   #FF6B35;
+      --yellow:    #FFD700;
+      --teal:      #4ECDC4;
+      --pink:      #FF6B9D;
+      --purple:    #7C3AED;
+      --dark:      #1A1A2E;
+      --mid:       #2B2D42;
+      --light-bg:  #FFF8F0;
+      --card-bg:   #FFFFFF;
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --shadow-sm: 0 4px 16px rgba(0,0,0,0.07);
+      --shadow-md: 0 12px 36px rgba(0,0,0,0.13);
+      --shadow-lg: 0 24px 60px rgba(0,0,0,0.18);
+      --nav-h:     76px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--light-bg);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ==============================
+       NAVBAR
+    ============================== */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 9000;
+      height: var(--nav-h);
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 2px solid rgba(255,107,53,0.1);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+      display: grid;
+      grid-template-columns: auto 1fr auto auto;
+      align-items: center;
+      padding: 0 32px;
+      gap: 20px;
+      transition: box-shadow .3s;
+    }
+
+    /* --- Logo --- */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .logo svg { width: 46px; height: 46px; }
+    .logo-text {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.55rem;
+      color: var(--primary);
+      line-height: 1;
+      letter-spacing: -.5px;
+    }
+    .logo-text em { color: var(--teal); font-style: normal; }
+
+    /* --- Nav Menu --- */
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      justify-content: center;
+      gap: 2px;
+    }
+    .nav-item { position: relative; }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 9px 13px;
+      border-radius: var(--radius-sm);
+      font-size: .87rem;
+      font-weight: 800;
+      color: var(--dark);
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      transition: background .18s, color .18s;
+      white-space: nowrap;
+    }
+    .nav-link .chev {
+      width: 10px; height: 10px;
+      transition: transform .22s;
+    }
+    .nav-link .chev path { stroke: var(--dark); transition: stroke .18s; }
+
+    .nav-item:hover > .nav-link {
+      background: var(--primary);
+      color: #fff;
+    }
+    .nav-item:hover > .nav-link .chev path { stroke: #fff; }
+    .nav-item:hover > .nav-link .chev { transform: rotate(180deg); }
+
+    /* --- Dropdown --- */
+    .dropdown {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      min-width: 210px;
+      background: #fff;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(255,107,53,.1);
+      padding: 8px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .22s ease, transform .25s cubic-bezier(.34,1.56,.64,1), visibility .22s;
+    }
+    .nav-item:hover > .dropdown {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: all;
+      transform: translateX(-50%) translateY(0);
+    }
+    .dropdown a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: .86rem;
+      font-weight: 700;
+      color: var(--mid);
+      text-decoration: none;
+      transition: background .15s, color .15s, padding-left .15s;
+    }
+    .dropdown a:hover {
+      background: var(--light-bg);
+      color: var(--primary);
+      padding-left: 18px;
+    }
+    .dd-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      flex-shrink: 0;
+    }
+
+    /* --- Search --- */
+    .search-wrap {
+      display: flex;
+      align-items: center;
+      background: var(--light-bg);
+      border: 2.5px solid transparent;
+      border-radius: 50px;
+      padding: 7px 7px 7px 18px;
+      gap: 8px;
+      transition: border-color .2s;
+    }
+    .search-wrap:focus-within {
+      border-color: var(--primary);
+      background: #fff;
+    }
+    .search-wrap input {
+      border: none; background: transparent;
+      font-family: 'Nunito', sans-serif;
+      font-size: .875rem; font-weight: 600;
+      color: var(--dark); outline: none; width: 185px;
+    }
+    .search-wrap input::placeholder { color: #bbb; font-weight: 400; }
+    .search-btn {
+      width: 34px; height: 34px;
+      background: var(--primary); border: none; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #fff; flex-shrink: 0;
+      transition: background .2s, transform .2s;
+    }
+    .search-btn:hover { background: var(--dark); transform: scale(1.08); }
+
+    /* --- Nav Icons --- */
+    .nav-actions { display: flex; gap: 8px; align-items: center; }
+    .nav-icon-btn {
+      position: relative;
+      width: 40px; height: 40px;
+      border-radius: var(--radius-sm);
+      border: 2px solid rgba(26,26,46,.1);
+      background: transparent;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--dark);
+      transition: background .18s, border-color .18s, color .18s;
+    }
+    .nav-icon-btn:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .cart-badge {
+      position: absolute; top: -5px; right: -5px;
+      width: 18px; height: 18px;
+      background: var(--pink); color: #fff; border-radius: 50%;
+      font-size: .62rem; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid #fff;
+    }
+
+    /* ==============================
+       HERO
+    ============================== */
+    .hero {
+      width: 100%;
+      min-height: 500px;
+      /* height: 44vh; */
+      /* max-height: 290px; */
+      background-color: rgb(0, 0, 148);
+      display: flex;
+      align-items: center;
+      padding: 4rem 1rem;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 14% 60%, rgba(255,255,255,.18) 0%, transparent 44%),
+        radial-gradient(circle at 84% 22%, rgba(255,215,0,.22) 0%, transparent 38%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Ccircle cx='40' cy='40' r='16' fill='none' stroke='white' stroke-opacity='.06' stroke-width='2'/%3E%3C/svg%3E");
+    }
+
+    .hero-inner {
+      width: 100%;
+      height: 100%;
+      max-width: 1520px;
+      padding: 0 28px;
+      margin-inline: auto;
+      display: flex;
+      flex-direction: column;
+      /* align-items: center; */
+      justify-content: space-between;
+      gap: 2rem;
+      /* background-color: #25D366; */
+    }
+
+    .hero-content {
+      color: #fff; 
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .img img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      
+    }
+
+    @keyframes heroSlide {
+      from { opacity: 0; transform: translateX(-30px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .hero-pill {
+      align-self: flex-start;
+      display: inline-flex; 
+      align-items: center; 
+      gap: 7px;
+      background: rgba(255,255,255,.22);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.3);
+      padding: 4px 14px; border-radius: 50px;
+      font-size: .74rem; font-weight: 800;
+      letter-spacing: .4px; margin-bottom: 8px;
+    }
+    .hero h1 {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(1.4rem, 3vw, 2.5rem);
+      line-height: 1.1; margin-bottom: 6px;
+    }
+    .hero h1 .hl { color: var(--yellow); }
+    .hero-sub {
+      font-size: .9rem; font-weight: 600;
+      opacity: .9; margin-bottom: 14px;
+    }
+    .hero-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+    .hbtn-main {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: #fff; color: var(--primary);
+      padding: 9px 22px; border-radius: 50px;
+      font-weight: 900; font-size: .85rem;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,.18);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .hbtn-main:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,.22); }
+    .hbtn-ghost {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(255,255,255,.2); color: #fff;
+      padding: 9px 22px; border-radius: 50px;
+      font-weight: 900; font-size: .85rem;
+      text-decoration: none;
+      border: 2px solid rgba(255,255,255,.35);
+      transition: background .2s, transform .2s;
+    }
+    .hbtn-ghost:hover { background: rgba(255,255,255,.3); transform: translateY(-3px); }
+
+    /* Hero floating stat chips */
+    .hero-stats {
+      position: absolute; right: 52px;
+      top: 50%; transform: translateY(-50%);
+      display: flex; gap: 14px; align-items: center;
+      animation: heroSlide .7s .25s ease both;
+    }
+    .stat-chip {
+      background: rgba(255,255,255,.2);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255,255,255,.3);
+      border-radius: 14px; padding: 10px 16px;
+      color: #fff; text-align: center;
+      animation: chipFloat 3s ease-in-out infinite;
+    }
+    .stat-chip:nth-child(2) { animation-delay: 1s; }
+    .stat-chip:nth-child(3) { animation-delay: 2s; }
+    .stat-num {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.3rem; display: block; line-height: 1;
+    }
+    .stat-lbl { font-size: .65rem; font-weight: 800; opacity: .85; }
+    @keyframes chipFloat {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-7px); }
+    }
+
+    /* ==============================
+       PRODUCTS SECTION
+    ============================== */
+    .products-section {
+      padding: 52px 28px 20px;
+      max-width: 1520px;
+      margin: 0 auto;
+      /* background-color: #1877F2; */
+    }
+
+    .row-header {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .row-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.62rem; color: var(--dark);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .row-icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      display: flex; align-items: center;
+      justify-content: center; font-size: 1.2rem;
+    }
+    .view-all {
+      display: flex; align-items: center; gap: 6px;
+      color: var(--primary); font-weight: 800; font-size: .87rem;
+      text-decoration: none; padding: 6px 14px;
+      border-radius: 50px; border: 2px solid var(--primary);
+      transition: background .18s, color .18s;
+    }
+    .view-all:hover { background: var(--primary); color: #fff; }
+
+    /* Product Grid */
+    .product-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 52px;
+    }
+
+    /* Product Card */
+    .pcard {
+      background: var(--card-bg);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      position: relative;
+      transition: transform .32s cubic-bezier(.34,1.3,.64,1), box-shadow .32s;
+    }
+    .pcard:hover {
+      transform: translateY(-10px) scale(1.025);
+      box-shadow: var(--shadow-md);
+    }
+
+    .pcard-img {
+      position: relative; width: 100%;
+      aspect-ratio: 3/4; overflow: hidden;
+    }
+    .pcard-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block; background: #eee;
+      transition: transform .42s ease;
+    }
+    .pcard:hover .pcard-img img { transform: scale(1.07); }
+
+    /* Badges */
+    .p-badge {
+      position: absolute; top: 9px; left: 9px;
+      padding: 3px 9px; border-radius: 50px;
+      font-size: .62rem; font-weight: 900;
+      letter-spacing: .5px; text-transform: uppercase;
+    }
+    .b-new  { background: var(--teal);   color: #fff; }
+    .b-hot  { background: var(--yellow); color: var(--dark); }
+    .b-sale { background: var(--pink);   color: #fff; }
+    .b-lim  { background: var(--purple); color: #fff; }
+
+    /* Wishlist */
+    .wish-btn {
+      position: absolute; top: 9px; right: 9px;
+      width: 30px; height: 30px;
+      background: rgba(255,255,255,.92);
+      border-radius: 50%; display: flex;
+      align-items: center; justify-content: center;
+      border: none; cursor: pointer; font-size: .9rem;
+      opacity: 0; transform: scale(.7);
+      transition: opacity .2s, transform .2s;
+    }
+    .pcard:hover .wish-btn { opacity: 1; transform: scale(1); }
+    .wish-btn:hover { background: var(--pink); color: #fff; }
+
+    /* Card body */
+    .pcard-body { padding: 10px 11px 12px; }
+    .pcard-cat {
+      font-size: .63rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .9px;
+      color: var(--teal); margin-bottom: 3px;
+    }
+    .pcard-name {
+      font-size: .83rem; font-weight: 800;
+      color: var(--dark); margin-bottom: 8px; line-height: 1.28;
+    }
+    .pcard-foot {
+      display: flex; align-items: center;
+      justify-content: space-between;
+    }
+    .pcard-price {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1rem; color: var(--primary);
+    }
+    .pcard-price s {
+      font-family: 'Nunito', sans-serif;
+      font-size: .71rem; color: #bbb;
+      font-weight: 600; margin-left: 3px;
+    }
+    .add-btn {
+      width: 28px; height: 28px;
+      background: var(--primary); border: none;
+      border-radius: 8px; color: #fff; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; flex-shrink: 0;
+      transition: background .18s, transform .22s;
+    }
+    .add-btn:hover { background: var(--dark); transform: rotate(90deg); }
+    .color-dots { display: flex; gap: 4px; margin-top: 6px; }
+    .cdot {
+      width: 7px; height: 7px; border-radius: 50%;
+      border: 1.5px solid rgba(0,0,0,.08);
+    }
+
+    /* ==============================
+       FOOTER
+    ============================== */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,.7);
+      padding: 64px 56px 30px;
+      margin-top: 20px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 50px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    /* Brand column */
+    .footer-brand-name {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.65rem; color: #fff; margin-bottom: 12px;
+    }
+    .footer-brand-name em { color: var(--teal); font-style: normal; }
+    .footer-brand p {
+      font-size: .875rem; line-height: 1.75;
+      opacity: .6; margin-bottom: 24px;
+    }
+
+    /* Social links */
+    .social-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .soc {
+      width: 40px; height: 40px; border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; color: #fff; font-size: .8rem; font-weight: 900;
+      transition: transform .22s, box-shadow .22s;
+      flex-shrink: 0; border: 1.5px solid rgba(255,255,255,.08);
+    }
+    .soc:hover { transform: translateY(-5px); box-shadow: 0 8px 22px rgba(0,0,0,.35); }
+    .soc-fb { background: #1877F2; }
+    .soc-ig { background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
+    .soc-tw { background: #000; }
+    .soc-tk { background: #010101; }
+    .soc-yt { background: #FF0000; }
+    .soc-pt { background: #E60023; }
+    .soc-wa { background: #25D366; }
+
+    /* Footer link columns */
+    .footer-col h4 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1rem; color: #fff; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 9px;
+    }
+    .footer-col h4::before {
+      content: ''; width: 4px; height: 16px;
+      background: var(--primary); border-radius: 2px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 9px; }
+    .footer-col ul li a {
+      color: rgba(255,255,255,.52); text-decoration: none;
+      font-size: .875rem; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: color .15s, padding-left .15s;
+    }
+    .footer-col ul li a:hover { color: var(--primary); padding-left: 5px; }
+
+    /* Footer bottom */
+    .footer-bottom {
+      padding-top: 26px;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap; gap: 14px;
+    }
+    .footer-bottom p { font-size: .82rem; opacity: .38; }
+    .pay-chips { display: flex; gap: 7px; align-items: center; }
+    .pay-chip {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 6px; padding: 4px 10px;
+      font-size: .72rem; font-weight: 800;
+      color: rgba(255,255,255,.5);
+    }
+
+    /* Scroll-to-top */
+    #scrollTop {
+      position: fixed; bottom: 26px; right: 26px;
+      width: 44px; height: 44px;
+      background: var(--primary); color: #fff;
+      border: none; border-radius: 12px; cursor: pointer;
+      box-shadow: 0 6px 20px rgba(255,107,53,.4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s, transform .2s;
+      z-index: 999;
+    }
+    #scrollTop.visible { opacity: 1; pointer-events: all; }
+    #scrollTop:hover { transform: translateY(-3px); }
+
+    @media (min-width: 768px) {
+      /* Hero */
+      .hero-inner {
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .hero-content {
+        width: 50%;
+        /* border: 2px solid white; */
+      }
+
+      .img {
+        width: 50%;
+        height: 15rem;
+        text-align: right;
+        /* max-height: ; */
+        /* max-height: 10rem; */
+        /* border: 2px solid white; */
+      }
+
+      /* Product section */
+      .product-row {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .product-row {
+        grid-template-columns: repeat(7, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVBAR
+============================================================ -->
+<nav class="navbar" id="navbar">
+
+  <!-- LOGO -->
+  <a href="#" class="logo">
+    <svg viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="23" cy="23" r="23" fill="#FF6B35"/>
+      <!-- Star -->
+      <path d="M23 7 L25.8 16.5H35.8L27.8 22.2L30.6 31.7L23 26L15.4 31.7L18.2 22.2L10.2 16.5H20.2Z" fill="#FFD700"/>
+      <!-- Accent dots -->
+      <circle cx="9"  cy="9"  r="3.2" fill="#4ECDC4"/>
+      <circle cx="37" cy="9"  r="3.2" fill="#FF6B9D"/>
+      <circle cx="9"  cy="37" r="2.5" fill="#7C3AED"/>
+      <circle cx="37" cy="37" r="2.5" fill="#FFD700" opacity=".8"/>
+    </svg>
+    <span class="logo-text">Tiny<em>Threads</em></span>
+  </a>
+
+  <!-- NAV MENU -->
+  <ul class="nav-menu">
+    <!-- Home -->
+    <li class="nav-item">
+      <a href="#" class="nav-link">Home
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1A1A2E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="dropdown">
+        <a href="#"><span class="dd-dot"></span>Featured Items</a>
+        <a href="#"><span class="dd-dot"></span>New Arrivals</a>
+        <a href="#"><span class="dd-dot"></span>Best Sellers</a>
+        <a href="#"><span class="dd-dot"></span>Sale &amp; Offers</a>
+      </div>
+    </li>
+    <!-- Products -->
+    <li class="nav-item">
+      <a href="#" class="nav-link">Products
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1A1A2E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="dropdown">
+        <a href="#"><span class="dd-dot"></span>Shoes &amp; Sneakers</a>
+        <a href="#"><span class="dd-dot"></span>Tops &amp; Dresses</a>
+        <a href="#"><span class="dd-dot"></span>Shorts &amp; Bottoms</a>
+        <a href="#"><span class="dd-dot"></span>Sandals &amp; Socks</a>
+        <a href="#"><span class="dd-dot"></span>Gift Sets</a>
+      </div>
+    </li>
+    <!-- Services -->
+    <li class="nav-item">
+      <a href="#" class="nav-link">Services
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1A1A2E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="dropdown">
+        <a href="#"><span class="dd-dot"></span>Gift Wrapping</a>
+        <a href="#"><span class="dd-dot"></span>Express Delivery</a>
+        <a href="#"><span class="dd-dot"></span>Free Returns</a>
+        <a href="#"><span class="dd-dot"></span>Size Guide</a>
+      </div>
+    </li>
+    <!-- Customer Relations -->
+    <li class="nav-item">
+      <a href="#" class="nav-link">Customer Relations
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1A1A2E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="dropdown">
+        <a href="#"><span class="dd-dot"></span>FAQ</a>
+        <a href="#"><span class="dd-dot"></span>Customer Reviews</a>
+        <a href="#"><span class="dd-dot"></span>Loyalty Program</a>
+        <a href="#"><span class="dd-dot"></span>Newsletter</a>
+      </div>
+    </li>
+    <!-- Contact -->
+    <li class="nav-item">
+      <a href="#" class="nav-link">Contact
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#1A1A2E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="dropdown">
+        <a href="#"><span class="dd-dot"></span>Email Us</a>
+        <a href="#"><span class="dd-dot"></span>Call Us</a>
+        <a href="#"><span class="dd-dot"></span>Store Locator</a>
+        <a href="#"><span class="dd-dot"></span>Live Chat</a>
+      </div>
+    </li>
+  </ul>
+
+  <!-- SEARCH -->
+  <div class="search-wrap">
+    <input type="text" placeholder="Search kids clothing…" aria-label="Search">
+    <button class="search-btn" aria-label="Submit search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- ICONS -->
+  <div class="nav-actions">
+    <button class="nav-icon-btn" title="Account">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      </svg>
+    </button>
+    <button class="nav-icon-btn" title="Wishlist">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+    </button>
+    <button class="nav-icon-btn" title="Cart">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+      <span class="cart-badge">3</span>
+    </button>
+  </div>
+</nav>
+
+
+<!-- 
+==========================
+      HERO
+==========================
+-->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-pill">✨ New Season Collection — Summer 2025</div>
+      <h1>Dress Them in <span class="hl">Magic</span><br>& Pure <span class="hl">Joy</span></h1>
+      <p class="hero-sub">Premium children's clothing — cute, comfy &amp; colourful for every adventure</p>
+      <div class="hero-btns">
+        <a href="#" class="hbtn-main">🛍️ Shop Now</a>
+        <a href="#" class="hbtn-ghost">✨ New Arrivals</a>
+      </div>
+    </div>
+
+    <div class="img">
+      <img src="../images/nike-sneakers.webp" alt="Velcro Star Runners">
+    </div>
+  </div>
+  <!-- <div class="hero-stats">
+    <div class="stat-chip"><span class="stat-num">500+</span><span class="stat-lbl">Products</span></div>
+    <div class="stat-chip"><span class="stat-num">FREE</span><span class="stat-lbl">Delivery</span></div>
+    <div class="stat-chip"><span class="stat-num">4.9★</span><span class="stat-lbl">Rating</span></div>
+  </div> -->
+</section>
+
+
+<!-- ============================================================
+     PRODUCTS
+============================================================ -->
+<section class="products-section">
+
+  <!-- ── ROW 1 : Sneakers & Shoes ── -->
+  <div class="row-header">
+    <h2 class="row-title"><span class="row-icon" style="background:#FFE5D9">👟</span>Sneakers &amp; Shoes</h2>
+    <a href="#" class="view-all">View All →</a>
+  </div>
+  <div class="product-row">
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=300&h=400&fit=crop&auto=format&q=80" alt="Rainbow Puff Sneakers" loading="lazy">
+        <span class="p-badge b-new">NEW</span>
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat">Footwear</p>
+        <p class="pcard-name">Rainbow Puff Sneakers</p>
+        <div class="pcard-foot">
+          <span class="pcard-price">$24.99</span>
+          <button class="add-btn" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#FF6B35"></span>
+          <span class="cdot" style="background:#4ECDC4"></span>
+          <span class="cdot" style="background:#7C3AED"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=400&fit=crop&auto=format&q=80" alt="Velcro Star Runners" loading="lazy">
+        <span class="p-badge b-hot">HOT</span>
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat">Footwear</p>
+        <p class="pcard-name">Velcro Star Runners</p>
+        <div class="pcard-foot">
+          <span class="pcard-price">$19.99</span>
+          <button class="add-btn" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#FFD700"></span>
+          <span class="cdot" style="background:#FF6B9D"></span>
+          <span class="cdot" style="background:#1A1A2E"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=300&h=400&fit=crop&auto=format&q=80" alt="Glitter Light-Ups" loading="lazy">
+        <span class="p-badge b-sale">SALE</span>
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat">Footwear</p>
+        <p class="pcard-name">Glitter Light-Ups</p>
+        <div class="pcard-foot">
+          <span class="pcard-price">$29.99 <s>$39.99</s></span>
+          <button class="add-btn" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#FF6B9D"></span>
+          <span class="cdot" style="background:#7C3AED"></span>
+          <span class="cdot" style="background:#4ECDC4"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1518894781321-630e638d0742?w=300&h=400&fit=crop&auto=format&q=80" alt="Canvas Hi-Tops" loading="lazy">
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat">Footwear</p>
+        <p class="pcard-name">Canvas Hi-Tops</p>
+        <div class="pcard-foot">
+          <span class="pcard-price">$22.99</span>
+          <button class="add-btn" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#1A1A2E"></span>
+          <span class="cdot" style="background:#f5f5f5;border-color:#ddd"></span>
+          <span class="cdot" style="background:#FF6B35"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=300&h=400&fit=crop&auto=format&q=80" alt="Classic White Kicks" loading="lazy">
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat">Footwear</p>
+        <p class="pcard-name">Classic White Kicks</p>
+        <div class="pcard-foot">
+          <span class="pcard-price">$18.99</span>
+          <button class="add-btn" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#f5f5f5;border-color:#ddd"></span>
+          <span class="cdot" style="background:#ccc"></span>
+          <span class="cdot" style="background:#1A1A2E"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=300&h=400&fit=crop&auto=format&q=80" alt="Slip-On Cloud Shoes" loading="lazy">
+        <span class="p-badge b-new">NEW</span>
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat">Footwear</p>
+        <p class="pcard-name">Slip-On Cloud Shoes</p>
+        <div class="pcard-foot">
+          <span class="pcard-price">$21.99</span>
+          <button class="add-btn" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#4ECDC4"></span>
+          <span class="cdot" style="background:#FF6B35"></span>
+          <span class="cdot" style="background:#FFD700"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1512374382149-233c42b6a83b?w=300&h=400&fit=crop&auto=format&q=80" alt="Sport Bounce Runners" loading="lazy">
+        <span class="p-badge b-hot">HOT</span>
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat">Footwear</p>
+        <p class="pcard-name">Sport Bounce Runners</p>
+        <div class="pcard-foot">
+          <span class="pcard-price">$26.99</span>
+          <button class="add-btn" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#FF6B35"></span>
+          <span class="cdot" style="background:#1A1A2E"></span>
+          <span class="cdot" style="background:#4ECDC4"></span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /row1 -->
+
+
+  <!-- ── ROW 2 : Shorts & Bottoms ── -->
+  <div class="row-header">
+    <h2 class="row-title"><span class="row-icon" style="background:#FFF9D0">🩳</span>Shorts &amp; Bottoms</h2>
+    <a href="#" class="view-all">View All →</a>
+  </div>
+  <div class="product-row">
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1591085686350-798c0f9faa7f?w=300&h=400&fit=crop&auto=format&q=80" alt="Denim Adventure Shorts" loading="lazy">
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--yellow)">Bottoms</p>
+        <p class="pcard-name">Denim Adventure Shorts</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:#c9a000">$14.99</span>
+          <button class="add-btn" style="background:var(--yellow);color:var(--dark)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#4a90d9"></span>
+          <span class="cdot" style="background:#1A1A2E"></span>
+          <span class="cdot" style="background:#7bc4e8"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=300&h=400&fit=crop&auto=format&q=80" alt="Cargo Explorer Shorts" loading="lazy">
+        <span class="p-badge b-new">NEW</span>
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--yellow)">Bottoms</p>
+        <p class="pcard-name">Cargo Explorer Shorts</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:#c9a000">$16.99</span>
+          <button class="add-btn" style="background:var(--yellow);color:var(--dark)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#6b8e50"></span>
+          <span class="cdot" style="background:#c8a86b"></span>
+          <span class="cdot" style="background:#1A1A2E"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1503919515935-1443393de866?w=300&h=400&fit=crop&auto=format&q=80" alt="Floral Mini Skirt" loading="lazy">
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--yellow)">Bottoms</p>
+        <p class="pcard-name">Floral Mini Skirt</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:#c9a000">$13.99</span>
+          <button class="add-btn" style="background:var(--yellow);color:var(--dark)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#FF6B9D"></span>
+          <span class="cdot" style="background:#FFD700"></span>
+          <span class="cdot" style="background:#7C3AED"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1471286174890-9c112ac8f1c8?w=300&h=400&fit=crop&auto=format&q=80" alt="Rainbow Jogger Pants" loading="lazy">
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--yellow)">Bottoms</p>
+        <p class="pcard-name">Rainbow Jogger Pants</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:#c9a000">$17.99</span>
+          <button class="add-btn" style="background:var(--yellow);color:var(--dark)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#FF6B35"></span>
+          <span class="cdot" style="background:#4ECDC4"></span>
+          <span class="cdot" style="background:#7C3AED"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1523381294911-8d3cead13475?w=300&h=400&fit=crop&auto=format&q=80" alt="Tropical Swim Shorts" loading="lazy">
+        <span class="p-badge b-hot">HOT</span>
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--yellow)">Bottoms</p>
+        <p class="pcard-name">Tropical Swim Shorts</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:#c9a000">$12.99</span>
+          <button class="add-btn" style="background:var(--yellow);color:var(--dark)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#4ECDC4"></span>
+          <span class="cdot" style="background:#FFD700"></span>
+          <span class="cdot" style="background:#FF6B35"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1559526323-cb2f2fe2591b?w=300&h=400&fit=crop&auto=format&q=80" alt="Printed Star Leggings" loading="lazy">
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--yellow)">Bottoms</p>
+        <p class="pcard-name">Printed Star Leggings</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:#c9a000">$11.99</span>
+          <button class="add-btn" style="background:var(--yellow);color:var(--dark)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#1A1A2E"></span>
+          <span class="cdot" style="background:#7C3AED"></span>
+          <span class="cdot" style="background:#FF6B9D"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1516762689617-e1cffcef479d?w=300&h=400&fit=crop&auto=format&q=80" alt="Denim Dungaree Shorts" loading="lazy">
+        <span class="p-badge b-sale">SALE</span>
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--yellow)">Bottoms</p>
+        <p class="pcard-name">Denim Dungaree Shorts</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:#c9a000">$19.99 <s>$27.99</s></span>
+          <button class="add-btn" style="background:var(--yellow);color:var(--dark)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#4a90d9"></span>
+          <span class="cdot" style="background:#1A1A2E"></span>
+          <span class="cdot" style="background:#7bc4e8"></span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /row2 -->
+
+
+  <!-- ── ROW 3 : Tops & Dresses ── -->
+  <div class="row-header">
+    <h2 class="row-title"><span class="row-icon" style="background:#FFD9EC">👗</span>Tops &amp; Dresses</h2>
+    <a href="#" class="view-all">View All →</a>
+  </div>
+  <div class="product-row">
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1525507119028-ed4fad6b12fa?w=300&h=400&fit=crop&auto=format&q=80" alt="Striped Fun Tee" loading="lazy">
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--pink)">Tops</p>
+        <p class="pcard-name">Striped Fun Tee</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:var(--pink)">$9.99</span>
+          <button class="add-btn" style="background:var(--pink)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#FF6B35"></span>
+          <span class="cdot" style="background:#4ECDC4"></span>
+          <span class="cdot" style="background:#1A1A2E"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1518831959646-742c3a14ebf6?w=300&h=400&fit=crop&auto=format&q=80" alt="Unicorn Princess Dress" loading="lazy">
+        <span class="p-badge b-new">NEW</span>
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--pink)">Dresses</p>
+        <p class="pcard-name">Unicorn Princess Dress</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:var(--pink)">$22.99</span>
+          <button class="add-btn" style="background:var(--pink)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#FF6B9D"></span>
+          <span class="cdot" style="background:#7C3AED"></span>
+          <span class="cdot" style="background:#4ECDC4"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1560243563-062bfc001d68?w=300&h=400&fit=crop&auto=format&q=80" alt="Dinosaur Hoodie" loading="lazy">
+        <span class="p-badge b-hot">HOT</span>
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--pink)">Tops</p>
+        <p class="pcard-name">Dinosaur Hoodie</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:var(--pink)">$18.99</span>
+          <button class="add-btn" style="background:var(--pink)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#6b8e50"></span>
+          <span class="cdot" style="background:#FF6B35"></span>
+          <span class="cdot" style="background:#4ECDC4"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?w=300&h=400&fit=crop&auto=format&q=80" alt="Rainbow Blouse" loading="lazy">
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--pink)">Tops</p>
+        <p class="pcard-name">Rainbow Blouse</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:var(--pink)">$14.99</span>
+          <button class="add-btn" style="background:var(--pink)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#FF6B35"></span>
+          <span class="cdot" style="background:#FFD700"></span>
+          <span class="cdot" style="background:#4ECDC4"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1604671801908-6f0c6a092c05?w=300&h=400&fit=crop&auto=format&q=80" alt="Graphic Tank Top" loading="lazy">
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--pink)">Tops</p>
+        <p class="pcard-name">Graphic Tank Top</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:var(--pink)">$8.99</span>
+          <button class="add-btn" style="background:var(--pink)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#FF6B9D"></span>
+          <span class="cdot" style="background:#4ECDC4"></span>
+          <span class="cdot" style="background:#FFD700"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1579710758050-78d98b8a5965?w=300&h=400&fit=crop&auto=format&q=80" alt="Floral Sundress" loading="lazy">
+        <span class="p-badge b-sale">SALE</span>
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--pink)">Dresses</p>
+        <p class="pcard-name">Floral Sundress</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:var(--pink)">$21.99 <s>$29.99</s></span>
+          <button class="add-btn" style="background:var(--pink)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#FF6B9D"></span>
+          <span class="cdot" style="background:#FFD700"></span>
+          <span class="cdot" style="background:#4ECDC4"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=300&h=400&fit=crop&auto=format&q=80" alt="Cozy Star Sweatshirt" loading="lazy">
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--pink)">Tops</p>
+        <p class="pcard-name">Cozy Star Sweatshirt</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:var(--pink)">$16.99</span>
+          <button class="add-btn" style="background:var(--pink)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#7C3AED"></span>
+          <span class="cdot" style="background:#FF6B35"></span>
+          <span class="cdot" style="background:#4ECDC4"></span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /row3 -->
+
+
+  <!-- ── ROW 4 : Sandals & Socks ── -->
+  <div class="row-header">
+    <h2 class="row-title"><span class="row-icon" style="background:#D4F5F3">🩴</span>Sandals &amp; Socks</h2>
+    <a href="#" class="view-all">View All →</a>
+  </div>
+  <div class="product-row">
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1603487742131-4160ec999306?w=300&h=400&fit=crop&auto=format&q=80" alt="Sparkle Jelly Sandals" loading="lazy">
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--teal)">Sandals</p>
+        <p class="pcard-name">Sparkle Jelly Sandals</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:var(--teal)">$15.99</span>
+          <button class="add-btn" style="background:var(--teal)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#FF6B9D"></span>
+          <span class="cdot" style="background:#4ECDC4"></span>
+          <span class="cdot" style="background:#7C3AED"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1519689373023-dd07c7988603?w=300&h=400&fit=crop&auto=format&q=80" alt="Beach Rubber Sandals" loading="lazy">
+        <span class="p-badge b-hot">HOT</span>
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--teal)">Sandals</p>
+        <p class="pcard-name">Beach Rubber Sandals</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:var(--teal)">$10.99</span>
+          <button class="add-btn" style="background:var(--teal)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#FF6B35"></span>
+          <span class="cdot" style="background:#FFD700"></span>
+          <span class="cdot" style="background:#4ECDC4"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1586495777744-4e6232bf2979?w=300&h=400&fit=crop&auto=format&q=80" alt="Rainbow Animal Socks 5pk" loading="lazy">
+        <span class="p-badge b-new">NEW</span>
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--teal)">Socks</p>
+        <p class="pcard-name">Rainbow Animal Socks 5pk</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:var(--teal)">$8.99</span>
+          <button class="add-btn" style="background:var(--teal)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#FF6B9D"></span>
+          <span class="cdot" style="background:#FFD700"></span>
+          <span class="cdot" style="background:#FF6B35"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=300&h=400&fit=crop&auto=format&q=80" alt="Gladiator Sandals" loading="lazy">
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--teal)">Sandals</p>
+        <p class="pcard-name">Gladiator Sandals</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:var(--teal)">$18.99</span>
+          <button class="add-btn" style="background:var(--teal)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#c8a86b"></span>
+          <span class="cdot" style="background:#1A1A2E"></span>
+          <span class="cdot" style="background:#FF6B9D"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=400&fit=crop&auto=format&q=80" alt="Rainbow Socks Pack 7pk" loading="lazy">
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--teal)">Socks</p>
+        <p class="pcard-name">Rainbow Socks Pack 7pk</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:var(--teal)">$9.99</span>
+          <button class="add-btn" style="background:var(--teal)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#FF6B35"></span>
+          <span class="cdot" style="background:#FFD700"></span>
+          <span class="cdot" style="background:#4ECDC4"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=400&fit=crop&auto=format&q=80" alt="Cloud Foam Sliders" loading="lazy">
+        <span class="p-badge b-sale">SALE</span>
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--teal)">Sandals</p>
+        <p class="pcard-name">Cloud Foam Sliders</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:var(--teal)">$12.99 <s>$17.99</s></span>
+          <button class="add-btn" style="background:var(--teal)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#f5f5f5;border-color:#ddd"></span>
+          <span class="cdot" style="background:#1A1A2E"></span>
+          <span class="cdot" style="background:#FF6B35"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-img">
+        <img src="https://images.unsplash.com/photo-1517438476312-10d79c077509?w=300&h=400&fit=crop&auto=format&q=80" alt="Fun Ankle Socks Bundle" loading="lazy">
+        <span class="p-badge b-lim">VALUE</span>
+        <button class="wish-btn" title="Wishlist">♡</button>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-cat" style="color:var(--teal)">Socks</p>
+        <p class="pcard-name">Fun Ankle Socks Bundle</p>
+        <div class="pcard-foot">
+          <span class="pcard-price" style="color:var(--teal)">$7.99</span>
+          <button class="add-btn" style="background:var(--teal)" title="Add to cart">+</button>
+        </div>
+        <div class="color-dots">
+          <span class="cdot" style="background:#FF6B9D"></span>
+          <span class="cdot" style="background:#FFD700"></span>
+          <span class="cdot" style="background:#7C3AED"></span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /row4 -->
+
+</section><!-- /products-section -->
+
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer>
+  <div class="footer-top">
+
+    <!-- Brand -->
+    <div class="footer-brand">
+      <div class="footer-brand-name">Tiny<em>Threads</em></div>
+      <p>Dressing little ones with joy, colour &amp; comfort since 2020. Every stitch made with love for your growing adventurers.</p>
+      <div class="social-row">
+        <!-- Facebook -->
+        <a href="#" class="soc soc-fb" title="Facebook" aria-label="Facebook">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <!-- Instagram -->
+        <a href="#" class="soc soc-ig" title="Instagram" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <!-- Twitter / X -->
+        <a href="#" class="soc soc-tw" title="X / Twitter" aria-label="X Twitter">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <!-- TikTok -->
+        <a href="#" class="soc soc-tk" title="TikTok" aria-label="TikTok">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.97a8.21 8.21 0 0 0 4.8 1.54V7.07a4.85 4.85 0 0 1-1.03-.38z"/></svg>
+        </a>
+        <!-- YouTube -->
+        <a href="#" class="soc soc-yt" title="YouTube" aria-label="YouTube">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58zM9.75 15.02V8.98L15.5 12z"/></svg>
+        </a>
+        <!-- Pinterest -->
+        <a href="#" class="soc soc-pt" title="Pinterest" aria-label="Pinterest">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+        </a>
+        <!-- WhatsApp -->
+        <a href="#" class="soc soc-wa" title="WhatsApp" aria-label="WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#">→ New Arrivals</a></li>
+        <li><a href="#">→ Best Sellers</a></li>
+        <li><a href="#">→ Sale Items</a></li>
+        <li><a href="#">→ Gift Cards</a></li>
+        <li><a href="#">→ Lookbook</a></li>
+      </ul>
+    </div>
+
+    <!-- Help -->
+    <div class="footer-col">
+      <h4>Help &amp; Info</h4>
+      <ul>
+        <li><a href="#">→ Size Guide</a></li>
+        <li><a href="#">→ Shipping Info</a></li>
+        <li><a href="#">→ Returns &amp; Refunds</a></li>
+        <li><a href="#">→ Track My Order</a></li>
+        <li><a href="#">→ FAQ</a></li>
+      </ul>
+    </div>
+
+    <!-- Company -->
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">→ About TinyThreads</a></li>
+        <li><a href="#">→ Sustainability</a></li>
+        <li><a href="#">→ Careers</a></li>
+        <li><a href="#">→ Press &amp; Media</a></li>
+        <li><a href="#">→ Privacy Policy</a></li>
+      </ul>
+    </div>
+
+  </div><!-- /footer-top -->
+
+  <div class="footer-bottom">
+    <p>© 2025 TinyThreads. All rights reserved. Made with ❤️ for little adventurers.</p>
+    <div class="pay-chips">
+      <span class="pay-chip">VISA</span>
+      <span class="pay-chip">MC</span>
+      <span class="pay-chip">PayPal</span>
+      <span class="pay-chip">Stripe</span>
+      <span class="pay-chip">Apple Pay</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Scroll-to-top button -->
+<button id="scrollTop" title="Back to top" aria-label="Scroll to top">↑</button>
+
+<!-- ============================================================
+     MINIMAL JS — navbar shadow + scroll-to-top
+============================================================ -->
+<script>
+  const navbar   = document.getElementById('navbar');
+  const scrollBtn = document.getElementById('scrollTop');
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 60) {
+      navbar.style.boxShadow = '0 4px 30px rgba(0,0,0,0.13)';
+      scrollBtn.classList.add('visible');
+    } else {
+      navbar.style.boxShadow = '0 2px 20px rgba(0,0,0,0.07)';
+      scrollBtn.classList.remove('visible');
+    }
+  });
+
+  scrollBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  /* Add-to-cart micro-feedback */
+  document.querySelectorAll('.add-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      btn.textContent = '✓';
+      btn.style.background = '#22c55e';
+      setTimeout(() => {
+        btn.textContent = '+';
+        btn.style.background = '';
+      }, 1200);
+    });
+  });
+</script>
+
+</body>
+</html>

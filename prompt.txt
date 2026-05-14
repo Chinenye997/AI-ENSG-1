@@ -1,0 +1,58 @@
+1. 
+
+I am a new software developer and I want you to help me build a landing page of a simple ecommerce site that sells children clothes.
+
+The landing page should have the following sections:
+1. A menu bar, logo and a search window all on the same level.
+2. A hero section that is about 20% of the length of the landing page and 100% of its width.
+3. A main body divided into 4 rows with each row having 7 product cards filled with different children clothing - shoes, socks, shorts, shoes, sandals, etc. 
+4. A footer that has all the social media links
+
+Build me this using HTML and CSS. Let the IDE be Visual Studio Code.
+
+Create a logo for me and place it at the top lefthand side.
+
+Let the menubar be sticky and let it have the following items with a dropdown in each of them: 
+- Home
+- Products
+- Services
+- Customer Relations
+- Contact
+
+Use bright colors and use pictures with good quality and the right aspect ratio.
+
+
+2. 
+
+Gemini I just founded an airline and I need to build an online portal where customers can book and schedule their flights. Help me develop a landing page for this airline. The name of the airline is called Global Airlines.
+
+I want you to build me a landing page that looks like a mix of the the landing pages of British Airways and Delta Air.
+
+Kindly build it for me using HTML and CSS. Do not use inline styling for CSS.
+
+Build a logo and place it at the top-left hand side of the landing page and use vscode as the IDE.
+
+My theme color is yankee blue and yankee red like in the US flag.
+
+Also build a footer that has all the copyright, cookie, and social media provisions. Try not to use dark colors.
+
+Kindly insert comments in your code so that my team members will be able to interprete and understand your code a lot faster.
+
+Global Airlines flies to every destination on earth.
+
+
+3. 
+
+Can you help me design the landing page of an online newspaper called Turing News.
+
+Make the landing page to look like the landing page of WallStreet Journal. Let it cover news, finance, sports, technology, health, entertainment, politics.
+
+Code it with HTML and CSS. Put comments in the code so that team members can do a lot more engineering on the work you have developed. Include space for adverts above the hero sections and in the side panels. Include a footer and any other details you think will make the newspaper landing page look very professional.
+
+4. 
+
+Kindly help me generate the image of a black american man that is dressed in a black corporate suit that combines the facial features of Barrack Obama and Martin Luther King. Place him in the middle of WallStreet and put a smile on his face. Let the color of his suit be dark blue and let the color of his shirt be white and the color of his tie be deep red. Let his shoes also be coporate shoes and the color burnt brown.
+
+5. 
+
+Kindly help me generate the image of a black american woman that is dressed in Nigerian female traditional attire. The woman should combine the features of Mrs Dora Akunyili and Ms Chimamanda Adichie. The female person should be placed in the middle of Broad Street in Lagos, Nigeria. Let the person greet people with the words "I throwey salute to una"

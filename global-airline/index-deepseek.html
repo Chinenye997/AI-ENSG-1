@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Global Airlines | Fly Everywhere</title>
+  <!-- 
+    Project: Global Airlines Landing Page
+    Developer: Frontend Specialist
+    Design inspiration: British Airways (elegant spacing, hero imagery) + Delta Air (clean booking panel, trust badges)
+    Color palette: Yankee Blue (#0A3161) and Yankee Red (#B22234) — inspired by US flag, balanced with light backgrounds.
+    All CSS is external (internal stylesheet, no inline styles).
+    Comments are added for team collaboration & code readability.
+  -->
+  <style>
+    /* ---------- RESET & GLOBAL STYLES ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+      background-color: #fefefe;  /* clean off-white background, no dark colors */
+      color: #1e2a3a;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    /* Container utility for consistent width */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* ---------- TYPOGRAPHY & REUSABLE ELEMENTS ---------- */
+    h1, h2, h3 {
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .section-title {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      color: #0A3161; /* yankee blue accent */
+      position: relative;
+      display: inline-block;
+    }
+    .section-title:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: #B22234; /* yankee red */
+      border-radius: 3px;
+    }
+
+    /* buttons & interactive */
+    .btn-primary {
+      display: inline-block;
+      background-color: #B22234; /* yankee red */
+      color: white;
+      font-weight: 600;
+      padding: 12px 28px;
+      border-radius: 40px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .btn-primary:hover {
+      background-color: #8b1a2b;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(178,34,52,0.2);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #0A3161;
+      color: #0A3161;
+      padding: 10px 24px;
+      border-radius: 40px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.2s;
+      display: inline-block;
+    }
+    .btn-outline:hover {
+      background: #0A3161;
+      color: white;
+    }
+
+    /* ----- HEADER / NAVIGATION (Yankee blue accents) ----- */
+    .site-header {
+      background: white;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.05), 0 2px 12px rgba(0,0,0,0.02);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(0px);
+    }
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    /* Logo area: left side, custom SVG + text */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #0A3161 0%, #B22234 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.6rem;
+      font-family: 'Segoe UI', system-ui;
+      box-shadow: 0 4px 10px rgba(10,49,97,0.2);
+    }
+    .logo-text h1 {
+      font-size: 1.6rem;
+      letter-spacing: -0.3px;
+      color: #0A3161;
+      line-height: 1.2;
+    }
+    .logo-text span {
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: #B22234;
+      letter-spacing: 0.5px;
+    }
+    .nav-links a {
+      margin-left: 28px;
+      text-decoration: none;
+      color: #1e2f3f;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover {
+      color: #B22234;
+    }
+    /* mobile friendly */
+    @media (max-width: 768px) {
+      .header-inner {
+        flex-direction: column;
+        gap: 16px;
+      }
+      .nav-links a {
+        margin: 0 12px;
+      }
+      .container {
+        padding: 0 20px;
+      }
+    }
+
+    /* ---------- HERO SECTION (mix of BA & Delta: large background, booking card overlay) ---------- */
+    .hero {
+      background: linear-gradient(rgba(10,49,97,0.65), rgba(178,34,52,0.4)), url('https://placehold.co/1600x800/2c3e50/white?text=Global+Airlines+Fleet') center/cover no-repeat;
+      /* Using a premium image placeholder – In production replace with actual high-res air travel imagery.
+         Since external images are allowed, we use a high-quality aviation-themed placeholder. */
+      background-image: linear-gradient(105deg, rgba(10,49,97,0.7) 0%, rgba(178,34,52,0.4) 100%), url('https://images.pexels.com/photos/358319/pexels-photo-358319.jpeg?auto=compress&cs=tinysrgb&w=1600');
+      background-size: cover;
+      background-position: center 30%;
+      padding: 80px 0 100px;
+      color: white;
+    }
+    .hero-grid {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+    }
+    .hero-text {
+      flex: 1;
+    }
+    .hero-text h2 {
+      font-size: 3.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .hero-text p {
+      font-size: 1.2rem;
+      opacity: 0.95;
+      margin-bottom: 2rem;
+      max-width: 500px;
+    }
+    /* booking card panel (modern, light card) */
+    .booking-card {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(2px);
+      border-radius: 32px;
+      padding: 28px 32px;
+      box-shadow: 0 25px 40px -12px rgba(0,0,0,0.25);
+      color: #1e2a3a;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .booking-card h3 {
+      font-size: 1.8rem;
+      color: #0A3161;
+      margin-bottom: 0.5rem;
+    }
+    .booking-card p {
+      color: #4a627a;
+      margin-bottom: 1.5rem;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 0.85rem;
+      color: #0A3161;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #dce4ec;
+      border-radius: 28px;
+      font-size: 0.95rem;
+      transition: 0.2s;
+      background: #fff;
+    }
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: #B22234;
+      box-shadow: 0 0 0 3px rgba(178,34,52,0.2);
+    }
+    .search-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+    }
+    .booking-card .btn-primary {
+      width: 100%;
+      text-align: center;
+      font-size: 1.1rem;
+      padding: 14px;
+      margin-top: 10px;
+    }
+
+    /* ---------- DESTINATION GRID (Fly everywhere) ---------- */
+    .destinations {
+      padding: 70px 0;
+      background: #fafcff;
+    }
+    .destinations-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .destinations-header .section-title:after {
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+    }
+    .grid-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 32px;
+      margin-top: 20px;
+    }
+    .dest-card {
+      background: white;
+      border-radius: 28px;
+      padding: 28px 16px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+      transition: all 0.25s ease;
+      border: 1px solid #eaedf2;
+    }
+    .dest-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 30px -12px rgba(10,49,97,0.12);
+      border-color: #ffe0e0;
+    }
+    .dest-icon {
+      font-size: 2.8rem;
+      margin-bottom: 16px;
+    }
+    .dest-card h4 {
+      font-size: 1.5rem;
+      color: #0A3161;
+      margin-bottom: 6px;
+    }
+    .dest-card p {
+      color: #5b6f82;
+      font-size: 0.9rem;
+    }
+    .badge {
+      background: #fef2f2;
+      color: #B22234;
+      padding: 4px 12px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 12px;
+    }
+
+    /* ---------- FEATURES / WHY GLOBAL (mix delta/ba style) ---------- */
+    .features {
+      padding: 60px 0;
+      background: white;
+    }
+    .features-flex {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+    }
+    .feature-item {
+      flex: 1;
+      min-width: 200px;
+      text-align: center;
+      padding: 20px;
+    }
+    .feature-icon {
+      background: #eef3fc;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 2rem;
+      color: #B22234;
+    }
+    .feature-item h3 {
+      font-size: 1.4rem;
+      color: #0A3161;
+      margin-bottom: 8px;
+    }
+
+    /* ---------- FOOTER: copyright, cookie, socials (light background, no dark colors) ---------- */
+    .site-footer {
+      background: #f8f9fc;
+      border-top: 1px solid #eaeef3;
+      padding: 48px 0 24px;
+      margin-top: 20px;
+    }
+    .footer-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    .footer-brand .logo-icon {
+      width: 42px;
+      height: 42px;
+      font-size: 1.3rem;
+    }
+    .footer-brand p {
+      margin-top: 12px;
+      color: #2c3e50;
+      font-size: 0.85rem;
+      max-width: 220px;
+    }
+    .footer-links {
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .footer-links-col h4 {
+      color: #0A3161;
+      margin-bottom: 16px;
+      font-size: 1rem;
+    }
+    .footer-links-col a {
+      display: block;
+      color: #4f6f8f;
+      text-decoration: none;
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+    .footer-links-col a:hover {
+      color: #B22234;
+    }
+    .social-icons {
+      display: flex;
+      gap: 20px;
+      margin-top: 16px;
+    }
+    .social-icons a {
+      background: #e5e9f0;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: 0.2s;
+      color: #0A3161;
+      text-decoration: none;
+    }
+    .social-icons a:hover {
+      background: #B22234;
+      color: white;
+      transform: translateY(-2px);
+    }
+    .footer-bottom {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: #5d7184;
+    }
+    .cookie-privacy a {
+      color: #0A3161;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+    .cookie-privacy a:hover {
+      text-decoration: underline;
+      color: #B22234;
+    }
+    @media (max-width: 700px) {
+      .footer-grid {
+        flex-direction: column;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+      .cookie-privacy a {
+        margin: 0 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ================= HEADER SECTION ================= -->
+<header class="site-header">
+  <div class="container header-inner">
+    <!-- Logo area: top-left as requested: custom logo design (no inline style) -->
+    <a href="#" class="logo">
+      <div class="logo-icon">GA</div>
+      <div class="logo-text">
+        <h1>Global Airlines</h1>
+        <span>fly every destination on earth</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="#">Book</a>
+      <a href="#">Manage trips</a>
+      <a href="#">Destinations</a>
+      <a href="#">Experience</a>
+      <a href="#">SkyClub</a>
+    </div>
+  </div>
+</header>
+
+<!-- ================= HERO + FLIGHT BOOKING PANEL (Delta/BA hybrid) ================= -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-text">
+      <h2>Explore beyond<br> borders.</h2>
+      <p>Global Airlines connects you to every destination on Earth. Award-winning service, modern fleet, and unmatched global network.</p>
+      <a href="#" class="btn-outline" style="background:white; border:none; color:#0A3161; box-shadow:0 4px 10px rgba(0,0,0,0.1);">Discover routes →</a>
+    </div>
+    <div class="booking-card">
+      <h3>Book your flight</h3>
+      <p>Low fares. Thousands of destinations. Seamless booking.</p>
+      <!-- Schedule & booking simulation form -->
+      <form id="flightSearchForm" action="#" method="get">
+        <div class="form-group">
+          <label>✈ From</label>
+          <input type="text" placeholder="City or Airport" value="New York (JFK)">
+        </div>
+        <div class="form-group">
+          <label>📍 To</label>
+          <input type="text" placeholder="Anywhere on Earth" value="Tokyo (HND)">
+        </div>
+        <div class="search-row">
+          <div class="form-group" style="flex:1">
+            <label>Depart</label>
+            <input type="date" value="2026-06-15">
+          </div>
+          <div class="form-group" style="flex:1">
+            <label>Return</label>
+            <input type="date" value="2026-06-22">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Passengers</label>
+          <select>
+            <option>1 Adult</option>
+            <option>2 Adults</option>
+            <option>2 Adults, 1 Child</option>
+            <option>Family of 4</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-primary">Search flights →</button>
+      </form>
+      <p style="font-size:0.7rem; margin-top:16px; text-align:center;">*Global Rewards members earn miles on every booking</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DESTINATION SHOWCASE: "GLOBAL AIRLINES FLIES TO EVERY DESTINATION ON EARTH" ================= -->
+<section class="destinations">
+  <div class="container">
+    <div class="destinations-header">
+      <h2 class="section-title">Fly to every corner of the world</h2>
+      <p style="color:#2c3e50; max-width:680px; margin: 16px auto 0;">From metropolitan hubs to remote paradises — Global Airlines reaches 200+ countries & territories.</p>
+    </div>
+    <div class="grid-cards">
+      <div class="dest-card">
+        <div class="dest-icon">🗽</div>
+        <h4>New York</h4>
+        <p>USA · JFK & EWR</p>
+        <span class="badge">daily flights</span>
+      </div>
+      <div class="dest-card">
+        <div class="dest-icon">🏔️</div>
+        <h4>Kathmandu</h4>
+        <p>Nepal · Gateway to Himalayas</p>
+        <span class="badge">new route</span>
+      </div>
+      <div class="dest-card">
+        <div class="dest-icon">🦘</div>
+        <h4>Sydney</h4>
+        <p>Australia · Harbour city</p>
+        <span class="badge">A350 service</span>
+      </div>
+      <div class="dest-card">
+        <div class="dest-icon">🌍</div>
+        <h4>Cape Town</h4>
+        <p>South Africa · Stunning coast</p>
+        <span class="badge">direct flights</span>
+      </div>
+      <div class="dest-card">
+        <div class="dest-icon">🏯</div>
+        <h4>Kyoto</h4>
+        <p>Japan · Cultural heart</p>
+        <span class="badge">seasonal special</span>
+      </div>
+      <div class="dest-card">
+        <div class="dest-icon">🏝️</div>
+        <h4>Fiji</h4>
+        <p>South Pacific · Island bliss</p>
+        <span class="badge">5 weekly</span>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 44px;">
+      <a href="#" class="btn-primary" style="background:#0A3161;">View all destinations →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FEATURES SECTION (Premium cabin, free wifi, etc) ================= -->
+<section class="features">
+  <div class="container">
+    <div style="text-align:center; margin-bottom: 40px;">
+      <h2 class="section-title" style="display:inline-block;">The Global difference</h2>
+      <p style="margin-top: 20px;">Inspired by world-class service & sustainability</p>
+    </div>
+    <div class="features-flex">
+      <div class="feature-item">
+        <div class="feature-icon">✈️</div>
+        <h3>Every Destination</h3>
+        <p>Over 1,200 airports worldwide — truly global coverage. No other airline goes further.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">💺</div>
+        <h3>Lie-Flat Suites</h3>
+        <p>Delta One & Business class inspired suites with direct aisle access on long-haul.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📶</div>
+        <h3>High-Speed WiFi</h3>
+        <p>Stay connected at 35,000ft. Free messaging for all SkyMiles members.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">♻️</div>
+        <h3>Sustainable fuel</h3>
+        <p>Carbon offset program & next-gen eco fleet — net zero by 2050.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER: copyright, cookie, social media (no dark colors) ================= -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo" style="margin-bottom: 8px;">
+          <div class="logo-icon" style="width:42px; height:42px; font-size:1.2rem;">GA</div>
+          <div class="logo-text"><h3 style="font-size:1.3rem;">Global Airlines</h3></div>
+        </div>
+        <p>Your passport to the world. Connecting cultures, creating memories since 2026.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-links-col">
+          <h4>Company</h4>
+          <a href="#">About us</a>
+          <a href="#">Careers</a>
+          <a href="#">Sustainability</a>
+          <a href="#">Newsroom</a>
+        </div>
+        <div class="footer-links-col">
+          <h4>Support</h4>
+          <a href="#">Help Center</a>
+          <a href="#">Baggage policy</a>
+          <a href="#">Travel requirements</a>
+          <a href="#">Refunds</a>
+        </div>
+        <div class="footer-links-col">
+          <h4>Legal & Policies</h4>
+          <a href="#">Cookie preferences</a>
+          <a href="#">Privacy notice</a>
+          <a href="#">Terms of carriage</a>
+          <a href="#">Accessibility</a>
+        </div>
+      </div>
+      <div>
+        <h4 style="color:#0A3161;">Follow the journey</h4>
+        <div class="social-icons">
+          <a href="#" aria-label="Instagram">📷</a>
+          <a href="#" aria-label="Twitter">🐦</a>
+          <a href="#" aria-label="Facebook">📘</a>
+          <a href="#" aria-label="LinkedIn">🔗</a>
+        </div>
+        <div style="margin-top: 20px;">
+          <h4 style="font-size:0.9rem;">Newsletter</h4>
+          <div style="display:flex; gap:8px; margin-top: 8px;">
+            <input type="email" placeholder="your@email.com" style="padding:8px 12px; border-radius:40px; border:1px solid #ccd7e6;">
+            <button style="background:#0A3161; border:none; padding:8px 18px; border-radius:40px; color:white; font-weight:600;">Subscribe</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 Global Airlines. All rights reserved. The world is yours.</div>
+      <div class="cookie-privacy">
+        <span>🍪 Cookie settings</span>
+        <a href="#">Manage cookies</a>
+        <a href="#">Privacy policy</a>
+        <a href="#">Do not sell my info</a>
+      </div>
+    </div>
+    <!-- Additional cookie provision & social media statement (explicit) -->
+    <div style="text-align: center; margin-top: 20px; font-size: 0.7rem; color:#5a6e82;">
+      This website uses essential & analytical cookies to improve your experience. By using GlobalAirlines.com you agree to our <a href="#" style="color:#B22234;">Cookie Policy</a>. Follow us on social media for exclusive offers.
+    </div>
+  </div>
+</footer>
+
+<!-- small script to prevent default form submission (booking simulation) - no inline style, just interactivity -->
+<script>
+  // Lightweight interactivity to show alert on booking demo (no inline styles added)
+  (function() {
+    const bookingForm = document.getElementById('flightSearchForm');
+    if(bookingForm) {
+      bookingForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert("✨ Demo booking flow: Global Airlines connects you to truly every destination on Earth! ✨\nOur full booking engine is coming soon. Explore our routes.");
+      });
+    }
+    // newsletter button basic alert
+    const subBtn = document.querySelector('.footer-brand + div button');
+    if(subBtn) {
+      subBtn.addEventListener('click', function() {
+        const emailInput = document.querySelector('.footer-brand + div input');
+        if(emailInput && emailInput.value.trim() !== "") {
+          alert("Thank you for subscribing! You'll receive Global updates & exclusive deals.");
+          emailInput.value = "";
+        } else {
+          alert("Please enter a valid email to receive our travel inspiration.");
+        }
+      });
+    }
+  })();
+</script>
+</body>
+</html>

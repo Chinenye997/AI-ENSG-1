@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KidsCorner - Children's Clothing Store</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #FFF5F7;
+            color: #333;
+        }
+
+        /* ===== STICKY HEADER & NAVIGATION ===== */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, #FF6B9D 0%, #FF8E53 100%);
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Logo */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo svg {
+            width: 50px;
+            height: 50px;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Search Bar */
+        .search-container {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 40px;
+            position: relative;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 12px 45px 12px 20px;
+            border: none;
+            border-radius: 30px;
+            font-size: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-container input:focus {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            transform: translateY(-1px);
+        }
+
+        .search-container button {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #FF6B9D;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .search-container button:hover {
+            background: #FF4785;
+        }
+
+        /* Navigation Menu */
+        .navbar {
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-item > a {
+            display: block;
+            padding: 16px 30px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-item:hover > a {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Dropdown Menus */
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            min-width: 220px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .nav-item:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 14px 24px;
+            color: #555;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .dropdown a:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown a:hover {
+            background: #FFF0F3;
+            color: #FF6B9D;
+            padding-left: 30px;
+        }
+
+        .dropdown-icon {
+            margin-left: 8px;
+            font-size: 12px;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            width: 100%;
+            height: 20vh;
+            min-height: 180px;
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 50%, #F093FB 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            animation: slide 20s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50%, -50%); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            font-weight: 400;
+            opacity: 0.95;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: #FFD93D;
+            color: #333;
+            padding: 8px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-top: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        /* ===== MAIN BODY - PRODUCT GRID ===== */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            color: #FF6B9D;
+            margin-bottom: 30px;
+            font-weight: 800;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #FF6B9D, #FFD93D);
+            border-radius: 2px;
+            margin: 10px auto 0;
+        }
+
+        .products-row {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 16px;
+            margin-bottom: 50px;
+        }
+
+        /* Product Card */
+        .product-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(255, 107, 157, 0.2);
+            border-color: #FF6B9D;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+            background: #f8f8f8;
+        }
+
+        .product-info {
+            padding: 12px;
+            text-align: center;
+        }
+
+        .product-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 6px;
+            line-height: 1.3;
+            height: 36px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .product-price {
+            font-size: 16px;
+            font-weight: 800;
+            color: #FF6B9D;
+        }
+
+        .product-price .original {
+            font-size: 12px;
+            color: #999;
+            text-decoration: line-through;
+            margin-left: 6px;
+            font-weight: 500;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 8px;
+            background: linear-gradient(135deg, #FF6B9D, #FF8E53);
+            color: white;
+            border: none;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            margin-top: 8px;
+            border-radius: 0 0 12px 12px;
+        }
+
+        .add-to-cart:hover {
+            opacity: 0.9;
+        }
+
+        /* Category Labels */
+        .category-label {
+            display: inline-block;
+            background: #E8F4FD;
+            color: #2196F3;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: linear-gradient(135deg, #2D3436 0%, #000000 100%);
+            color: white;
+            padding: 60px 40px 30px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #FFD93D;
+            font-weight: 700;
+        }
+
+        .footer-section p, .footer-section a {
+            color: #bbb;
+            text-decoration: none;
+            line-height: 2;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #FF6B9D;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .social-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .social-icon:hover {
+            background: #FF6B9D;
+            transform: translateY(-3px);
+            border-color: #FF6B9D;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .products-row {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .products-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .header-top {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .search-container {
+                margin: 0;
+                max-width: 100%;
+            }
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: flex-start;
+            }
+            .hero h1 {
+                font-size: 32px;
+            }
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div class="header-top">
+            <!-- Logo -->
+            <a href="#" class="logo">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Background Circle -->
+                    <circle cx="50" cy="50" r="48" fill="white"/>
+                    <!-- Baby Face -->
+                    <circle cx="50" cy="45" r="28" fill="#FFD93D"/>
+                    <!-- Eyes -->
+                    <circle cx="40" cy="40" r="4" fill="#333"/>
+                    <circle cx="60" cy="40" r="4" fill="#333"/>
+                    <!-- Cheeks -->
+                    <circle cx="35" cy="48" r="5" fill="#FF6B9D" opacity="0.6"/>
+                    <circle cx="65" cy="48" r="5" fill="#FF6B9D" opacity="0.6"/>
+                    <!-- Smile -->
+                    <path d="M 40 52 Q 50 60 60 52" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    <!-- Hair -->
+                    <path d="M 30 25 Q 40 15 50 20 Q 60 15 70 25" stroke="#8B4513" stroke-width="4" fill="none" stroke-linecap="round"/>
+                    <!-- Bow -->
+                    <path d="M 50 18 L 45 12 L 50 15 L 55 12 Z" fill="#FF6B9D"/>
+                    <!-- Body/Shirt -->
+                    <path d="M 25 75 Q 50 65 75 75 L 75 95 L 25 95 Z" fill="#667EEA"/>
+                    <!-- Star on shirt -->
+                    <polygon points="50,72 52,78 58,78 53,82 55,88 50,84 45,88 47,82 42,78 48,78" fill="#FFD93D"/>
+                </svg>
+                <span class="logo-text">KidsCorner</span>
+            </a>
+
+            <!-- Search -->
+            <div class="search-container">
+                <input type="text" placeholder="Search for clothes, shoes, accessories...">
+                <button>🔍</button>
+            </div>
+
+            <!-- Cart Icon Placeholder -->
+            <div style="color: white; font-size: 24px; cursor: pointer;">🛒</div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="navbar">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#">Home <span class="dropdown-icon">▼</span></a>
+                    <div class="dropdown">
+                        <a href="#">New Arrivals</a>
+                        <a href="#">Best Sellers</a>
+                        <a href="#">Sale Items</a>
+                        <a href="#">Gift Cards</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Products <span class="dropdown-icon">▼</span></a>
+                    <div class="dropdown">
+                        <a href="#">T-Shirts & Tops</a>
+                        <a href="#">Bottoms & Shorts</a>
+                        <a href="#">Dresses & Skirts</a>
+                        <a href="#">Outerwear</a>
+                        <a href="#">Sleepwear</a>
+                        <a href="#">Swimwear</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Services <span class="dropdown-icon">▼</span></a>
+                    <div class="dropdown">
+                        <a href="#">Gift Wrapping</a>
+                        <a href="#">Size Guide</a>
+                        <a href="#">Personalization</a>
+                        <a href="#">Bulk Orders</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Customer Relations <span class="dropdown-icon">▼</span></a>
+                    <div class="dropdown">
+                        <a href="#">Shipping Info</a>
+                        <a href="#">Returns & Exchanges</a>
+                        <a href="#">Track Order</a>
+                        <a href="#">FAQ</a>
+                        <a href="#">Loyalty Program</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Contact <span class="dropdown-icon">▼</span></a>
+                    <div class="dropdown">
+                        <a href="#">Email Us</a>
+                        <a href="#">Live Chat</a>
+                        <a href="#">Store Locator</a>
+                        <a href="#">Careers</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>🌈 Summer Collection 2026</h1>
+            <p>Bright, playful & comfortable styles for your little ones</p>
+            <div class="hero-badge">Up to 50% OFF — Shop Now!</div>
+        </div>
+    </section>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+
+        <!-- ROW 1: T-Shirts & Tops -->
+        <h2 class="section-title">👕 T-Shirts & Tops</h2>
+        <div class="products-row">
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/i.etsystatic.com/d7ac319cbda9ca98d3e38f6ca284b6c3a67fbd42.jpg" alt="Graphic Tee" class="product-image">
+                <div class="product-info">
+                    <span class="category-label">T-Shirt</span>
+                    <div class="product-name">"Trouble Never Looked So Sweet" Tee</div>
+                    <div class="product-price">$18.99 <span class="original">$24.99</span></div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/milimilu.com/6ae57af1b78c6b0e852fbaed8c62685e3cbb62e6.jpg" alt="Blox Print Tee" class="product-image">
+                <div class="product-info">
+                    <span class="category-label">T-Shirt</span>
+                    <div class="product-name">Organic Cotton Blox Print Tee</div>
+                    <div class="product-price">$22.50</div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/static.contrado.com/b20eeb79ee0d0913ec496a72cb174af7ea8f5273.jpg" alt="Crab Print Tee" class="product-image">
+                <div class="product-info">
+                    <span class="category-label">T-Shirt</span>
+                    <div class="product-name">Colorful Crab Adventure Tee</div>
+                    <div class="product-price">$19.99 <span class="original">$26.00</span></div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/nilababyshop.com/03ff9600228bf68f8c2f2e8165f8015a43958896.jpg" alt="Onesies Pack" class="product-image">
+                <div class="product-info">
+                    <span class="category-label">Onesies</span>
+                    <div class="product-name">5-Pack Fun Character Onesies</div>
+                    <div class="product-price">$34.99</div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/img.freepik.com/d061e942404e896299deced3e9f317b1be55cce2.jpg" alt="Striped Set" class="product-image">
+                <div class="product-info">
+                    <span class="category-label">Set</span>
+                    <div class="product-name">Classic Striped Tee & Pants Set</div>
+                    <div class="product-price">$28.00 <span class="original">$35.00</span></div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.shutterstock.com/3a10ad09865d20ff7e960fa01393806c416b7b90.jpg" alt="Knit Cardigan" class="product-image">
+                <div class="product-info">
+                    <span class="category-label">Knitwear</span>
+                    <div class="product-name">Cozy Pom-Pom Knit Cardigan</div>
+                    <div class="product-price">$32.50</div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/img.freepik.com/40b9cf12882981d5c1c0aec304f617b671719d84.jpg" alt="Waffle Set" class="product-image">
+                <div class="product-info">
+                    <span class="category-label">Set</span>
+                    <div class="product-name">Scandinavian Waffle Knit Set</div>
+                    <div class="product-price">$29.99 <span class="original">$38.00</span></div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+        </div>
+
+        <!-- ROW 2: Bottoms & Shorts -->
+        <h2 class="section-title">🩳 Bottoms & Shorts</h2>
+        <div class="products-row">
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.shutterstock.com/f2ef694a26fef3e5ffc85ef66069d12346a7a9c8.jpg" alt="Lime Shorts" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#E8F5E9; color:#4CAF50;">Shorts</span>
+                    <div class="product-name">Lime Green Summer Shorts</div>
+                    <div class="product-price">$14.99</div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/img.freepik.com/d061e942404e896299deced3e9f317b1be55cce2.jpg" alt="Grey Joggers" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#E8F5E9; color:#4CAF50;">Pants</span>
+                    <div class="product-name">Comfy Grey Jogger Pants</div>
+                    <div class="product-price">$16.50 <span class="original">$21.00</span></div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/milimilu.com/6ae57af1b78c6b0e852fbaed8c62685e3cbb62e6.jpg" alt="Orange Shorts" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#E8F5E9; color:#4CAF50;">Shorts</span>
+                    <div class="product-name">Bright Orange Cargo Shorts</div>
+                    <div class="product-price">$18.00</div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.shutterstock.com/3a10ad09865d20ff7e960fa01393806c416b7b90.jpg" alt="Knit Leggings" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#E8F5E9; color:#4CAF50;">Leggings</span>
+                    <div class="product-name">Soft Ribbed Leggings</div>
+                    <div class="product-price">$12.99 <span class="original">$17.00</span></div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/img.freepik.com/40b9cf12882981d5c1c0aec304f617b671719d84.jpg" alt="Beige Pants" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#E8F5E9; color:#4CAF50;">Pants</span>
+                    <div class="product-name">Neutral Tapered Pants</div>
+                    <div class="product-price">$19.50</div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.shutterstock.com/f2ef694a26fef3e5ffc85ef66069d12346a7a9c8.jpg" alt="Denim Shorts" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#E8F5E9; color:#4CAF50;">Shorts</span>
+                    <div class="product-name">Classic Denim Shorts</div>
+                    <div class="product-price">$15.99 <span class="original">$20.00</span></div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/img.freepik.com/d061e942404e896299deced3e9f317b1be55cce2.jpg" alt="Cotton Shorts" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#E8F5E9; color:#4CAF50;">Shorts</span>
+                    <div class="product-name">Cotton Play Shorts Set</div>
+                    <div class="product-price">$21.00</div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+        </div>
+
+        <!-- ROW 3: Shoes & Footwear -->
+        <h2 class="section-title">👟 Shoes & Footwear</h2>
+        <div class="products-row">
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.shutterstock.com/3a10ad09865d20ff7e960fa01393806c416b7b90.jpg" alt="Pink Shoes" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#FFF3E0; color:#FF9800;">Shoes</span>
+                    <div class="product-name">Pink Bow Ballet Flats</div>
+                    <div class="product-price">$24.99 <span class="original">$32.00</span></div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/img.freepik.com/d061e942404e896299deced3e9f317b1be55cce2.jpg" alt="Black Sneakers" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#FFF3E0; color:#FF9800;">Sneakers</span>
+                    <div class="product-name">Polka Dot Casual Sneakers</div>
+                    <div class="product-price">$28.50</div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/i.etsystatic.com/d7ac319cbda9ca98d3e38f6ca284b6c3a67fbd42.jpg" alt="Checkered Shoes" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#FFF3E0; color:#FF9800;">Shoes</span>
+                    <div class="product-name">Blue Checkered Slip-Ons</div>
+                    <div class="product-price">$22.00 <span class="original">$28.00</span></div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.shutterstock.com/3a10ad09865d20ff7e960fa01393806c416b7b90.jpg" alt="Soft Booties" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#FFF3E0; color:#FF9800;">Booties</span>
+                    <div class="product-name">Fleece-Lined Winter Booties</div>
+                    <div class="product-price">$19.99</div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/img.freepik.com/d061e942404e896299deced3e9f317b1be55cce2.jpg" alt="Running Shoes" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#FFF3E0; color:#FF9800;">Sneakers</span>
+                    <div class="product-name">Sporty Running Shoes</div>
+                    <div class="product-price">$35.00 <span class="original">$45.00</span></div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.shutterstock.com/3a10ad09865d20ff7e960fa01393806c416b7b90.jpg" alt="Sandals" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#FFF3E0; color:#FF9800;">Sandals</span>
+                    <div class="product-name">Summer Open-Toe Sandals</div>
+                    <div class="product-price">$16.50</div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/img.freepik.com/d061e942404e896299deced3e9f317b1be55cce2.jpg" alt="Velcro Shoes" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#FFF3E0; color:#FF9800;">Shoes</span>
+                    <div class="product-name">Easy-Velcro School Shoes</div>
+                    <div class="product-price">$26.99 <span class="original">$34.00</span></div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+        </div>
+
+        <!-- ROW 4: Socks & Accessories -->
+        <h2 class="section-title">🧦 Socks & Accessories</h2>
+        <div class="products-row">
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.yarnspirations.com/3718d3bde26e3d53fe79ac5be3a35a43dc26f2f2.jpg" alt="Rainbow Socks" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#F3E5F5; color:#9C27B0;">Socks</span>
+                    <div class="product-name">Hand-Knit Rainbow Striped Socks</div>
+                    <div class="product-price">$8.99 <span class="original">$12.00</span></div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.socksmith.com/5791d607534baf624808865db58828f559aad6bb.jpg" alt="Butterfly Socks" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#F3E5F5; color:#9C27B0;">Socks</span>
+                    <div class="product-name">Butterfly Garden Cotton Socks</div>
+                    <div class="product-price">$6.50</div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.yarnspirations.com/3718d3bde26e3d53fe79ac5be3a35a43dc26f2f2.jpg" alt="Colorful Socks" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#F3E5F5; color:#9C27B0;">Socks</span>
+                    <div class="product-name">3-Pack Bright Knit Socks</div>
+                    <div class="product-price">$14.99 <span class="original">$19.00</span></div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.socksmith.com/5791d607534baf624808865db58828f559aad6bb.jpg" alt="Animal Socks" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#F3E5F5; color:#9C27B0;">Socks</span>
+                    <div class="product-name">Cute Animal Face Socks</div>
+                    <div class="product-price">$7.00</div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.shutterstock.com/3a10ad09865d20ff7e960fa01393806c416b7b90.jpg" alt="Beanie Hat" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#F3E5F5; color:#9C27B0;">Accessories</span>
+                    <div class="product-name">Cozy White Knit Beanie</div>
+                    <div class="product-price">$12.99 <span class="original">$16.00</span></div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/img.freepik.com/40b9cf12882981d5c1c0aec304f617b671719d84.jpg" alt="Hair Bow" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#F3E5F5; color:#9C27B0;">Accessories</span>
+                    <div class="product-name">Pink Ribbon Hair Bow Set</div>
+                    <div class="product-price">$5.99</div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+            <div class="product-card">
+                <img src="https://kimi-web-img.moonshot.cn/img/www.yarnspirations.com/3718d3bde26e3d53fe79ac5be3a35a43dc26f2f2.jpg" alt="Warm Socks" class="product-image">
+                <div class="product-info">
+                    <span class="category-label" style="background:#F3E5F5; color:#9C27B0;">Socks</span>
+                    <div class="product-name">Winter Wool Blend Socks</div>
+                    <div class="product-price">$9.50 <span class="original">$13.00</span></div>
+                </div>
+                <button class="add-to-cart">Add to Cart 🛒</button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>🛍️ KidsCorner</h3>
+                <p>Making childhood brighter, one outfit at a time. Quality clothes for kids aged 0-12.</p>
+                <div class="social-links">
+                    <a href="#" class="social-icon" title="Facebook">📘</a>
+                    <a href="#" class="social-icon" title="Instagram">📸</a>
+                    <a href="#" class="social-icon" title="Twitter">🐦</a>
+                    <a href="#" class="social-icon" title="Pinterest">📌</a>
+                    <a href="#" class="social-icon" title="YouTube">▶️</a>
+                    <a href="#" class="social-icon" title="TikTok">🎵</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#">About Us</a><br>
+                <a href="#">Careers</a><br>
+                <a href="#">Press & Media</a><br>
+                <a href="#">Sustainability</a><br>
+                <a href="#">Affiliate Program</a>
+            </div>
+            <div class="footer-section">
+                <h3>Customer Care</h3>
+                <a href="#">Help Center</a><br>
+                <a href="#">Shipping & Delivery</a><br>
+                <a href="#">Returns Policy</a><br>
+                <a href="#">Size Guide</a><br>
+                <a href="#">Track Your Order</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>📧 hello@kidscorner.com</p>
+                <p>📞 1-800-KIDS-JOY</p>
+                <p>📍 123 Playful Lane, Toy City, TC 98765</p>
+                <p>🕐 Mon-Fri: 9AM - 6PM EST</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 KidsCorner. All rights reserved. | Privacy Policy | Terms of Service</p>
+        </div>
+    </footer>
+
+</body>
+</html>

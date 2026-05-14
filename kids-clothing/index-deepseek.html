@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>LittleSteps - Kids Clothing Paradise</title>
+    <!-- Google Fonts for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (free icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #FEF9E6;  /* warm creamy background */
+            color: #1E2A32;
+            scroll-behavior: smooth;
+        }
+
+        /* ========= STICKY MENU + LOGO + SEARCH ROW ========= */
+        .top-bar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, #FFD166 0%, #FFB347 100%);
+            padding: 0.8rem 2rem;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        /* Logo area */
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-icon {
+            background: #2A9D8F;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #2C3E50;
+            text-shadow: 2px 2px 0 rgba(255,255,200,0.6);
+        }
+        .logo-text span {
+            color: #E76F51;
+            font-weight: 900;
+        }
+
+        /* Search box */
+        .search-wrapper {
+            flex: 0 1 320px;
+        }
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 60px;
+            padding: 0.5rem 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+        .search-box input {
+            border: none;
+            outline: none;
+            flex: 1;
+            font-size: 1rem;
+            padding: 0.4rem 0;
+            background: transparent;
+            font-weight: 500;
+        }
+        .search-box button {
+            background: none;
+            border: none;
+            color: #F4A261;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .search-box button:hover {
+            color: #E76F51;
+        }
+
+        /* MENU BAR + DROPDOWN */
+        .menu-bar {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropbtn {
+            background: #2C3E50;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dropbtn i {
+            font-size: 0.9rem;
+        }
+        .dropbtn:hover {
+            background: #E76F51;
+            transform: translateY(-2px);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #ffffff;
+            min-width: 180px;
+            border-radius: 16px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+            z-index: 1;
+            top: 48px;
+            left: 0;
+            overflow: hidden;
+            border: 1px solid #FFE0A3;
+        }
+        .dropdown-content a {
+            color: #1E2A32;
+            padding: 12px 18px;
+            text-decoration: none;
+            display: block;
+            font-weight: 500;
+            transition: background 0.2s;
+            font-size: 0.9rem;
+        }
+        .dropdown-content a:hover {
+            background-color: #FFF0D4;
+            color: #E76F51;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* hero section: 20% of viewport height (relative to page length) */
+        .hero {
+            width: 100%;
+            height: 20vh;    /* 20% of viewport height, feels balanced */
+            min-height: 180px;
+            background: linear-gradient(107deg, #F9C9B6 0%, #FADADD 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-image: url('https://placehold.co/2000x400/FFDAB9/FF8C42?text=✦+LittleSteps+✦+Playful+Fashion+for+Kids');
+            background-size: cover;
+            background-position: center 30%;
+            position: relative;
+            border-bottom: 6px solid #FFB347;
+        }
+        .hero-overlay {
+            background: rgba(255,245,220,0.75);
+            padding: 1rem 2rem;
+            border-radius: 60px;
+            backdrop-filter: blur(3px);
+        }
+        .hero h1 {
+            font-size: clamp(1.5rem, 5vw, 2.8rem);
+            font-weight: 800;
+            color: #2C3E50;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #D35400;
+        }
+
+        /* MAIN BODY: 4 rows, each with 7 product cards */
+        .products-section {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
+        .product-row {
+            margin-bottom: 3rem;
+        }
+        .row-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            padding-left: 0.5rem;
+            border-left: 8px solid #F4A261;
+            color: #1E4660;
+        }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1.5rem;
+        }
+        /* ensure exactly 7 cards per row on desktop */
+        @media (min-width: 1200px) {
+            .cards-grid {
+                grid-template-columns: repeat(7, 1fr);
+            }
+        }
+        @media (max-width: 1199px) and (min-width: 900px) {
+            .cards-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        @media (max-width: 899px) {
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* product card styling */
+        .product-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            padding-bottom: 1rem;
+            border: 1px solid #FFE0B5;
+        }
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+        }
+        .card-img {
+            width: 100%;
+            aspect-ratio: 1 / 1; /* perfect square, ensures uniform aspect */
+            object-fit: cover;
+            background: #fef2e0;
+            transition: transform 0.4s;
+        }
+        .product-card:hover .card-img {
+            transform: scale(1.02);
+        }
+        .product-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin: 0.7rem 0.3rem 0.2rem;
+            color: #2C3E50;
+        }
+        .price {
+            font-weight: 800;
+            color: #E76F51;
+            font-size: 1.1rem;
+            margin: 0.2rem 0;
+        }
+        .card-category {
+            font-size: 0.7rem;
+            background: #FFE8D6;
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            color: #BF6F42;
+        }
+
+        /* FOOTER with socials */
+        .footer {
+            background: #264653;
+            color: #f8f9fa;
+            padding: 2rem 1.5rem 1.8rem;
+            margin-top: 2rem;
+            border-top-left-radius: 32px;
+            border-top-right-radius: 32px;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        .social-links {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .social-links a {
+            background: #2A9D8F;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        .social-links a:hover {
+            background: #E9C46A;
+            transform: scale(1.1);
+            color: #264653;
+        }
+        .footer p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+        .copyright {
+            font-size: 0.75rem;
+        }
+
+        /* responsive touches */
+        @media (max-width: 780px) {
+            .top-bar {
+                padding: 0.8rem 1rem;
+            }
+            .nav-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .menu-bar {
+                justify-content: center;
+            }
+            .search-wrapper {
+                width: 100%;
+            }
+            .logo-area {
+                justify-content: center;
+            }
+        }
+
+        /* dummy alert for search demo */
+        .search-box button:active {
+            transform: scale(0.96);
+        }
+    </style>
+</head>
+<body>
+
+<!-- STICKY MENU + LOGO + SEARCH (all same level) -->
+<div class="top-bar">
+    <div class="nav-container">
+        <!-- Logo area (left hand side) -->
+        <div class="logo-area">
+            <div class="logo-icon">
+                <i class="fas fa-child"></i>
+            </div>
+            <div class="logo-text">Little<span>Steps</span></div>
+        </div>
+
+        <!-- Search window -->
+        <div class="search-wrapper">
+            <div class="search-box">
+                <input type="text" placeholder="Search cute outfits, shoes, socks..." id="searchInput">
+                <button id="searchBtn"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+
+        <!-- Menu Bar with dropdowns -->
+        <div class="menu-bar">
+            <div class="dropdown">
+                <button class="dropbtn"><i class="fas fa-home"></i> Home <i class="fas fa-chevron-down"></i></button>
+                <div class="dropdown-content">
+                    <a href="#">🏡 Homepage</a>
+                    <a href="#">✨ New Arrivals</a>
+                    <a href="#">🎉 Sale Corner</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn"><i class="fas fa-tshirt"></i> Products <i class="fas fa-chevron-down"></i></button>
+                <div class="dropdown-content">
+                    <a href="#">👕 Tops & Tees</a>
+                    <a href="#">👖 Bottoms</a>
+                    <a href="#">👟 Shoes & Sneakers</a>
+                    <a href="#">🧦 Socks & Accessories</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn"><i class="fas fa-concierge-bell"></i> Services <i class="fas fa-chevron-down"></i></button>
+                <div class="dropdown-content">
+                    <a href="#">📦 Free Shipping</a>
+                    <a href="#">🎁 Gift Wrapping</a>
+                    <a href="#">🔄 Easy Returns</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn"><i class="fas fa-headset"></i> Customer Relations <i class="fas fa-chevron-down"></i></button>
+                <div class="dropdown-content">
+                    <a href="#">📞 Support Center</a>
+                    <a href="#">⭐ Reviews & Testimonials</a>
+                    <a href="#">📝 Order Tracking</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn"><i class="fas fa-envelope"></i> Contact <i class="fas fa-chevron-down"></i></button>
+                <div class="dropdown-content">
+                    <a href="#">📧 Email Us</a>
+                    <a href="#">📍 Store Locator</a>
+                    <a href="#">💬 Live Chat</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- HERO SECTION: 20% of page length (20vh ensures visible) -->
+<section class="hero">
+    <div class="hero-overlay">
+        <h1>✦ Little Steps, Big Smiles ✦</h1>
+        <p>Super comfy & colorful clothes for joyful kids</p>
+    </div>
+</section>
+
+<!-- MAIN BODY: 4 ROWS × 7 PRODUCT CARDS each. All filled with different items -->
+<main class="products-section">
+    <!-- ROW 1: Summer Essentials / Shorts & T-shirts -->
+    <div class="product-row">
+        <div class="row-title"><i class="fas fa-sun"></i> Playful Summer Picks</div>
+        <div class="cards-grid" id="row1">
+            <!-- 7 cards generated via JS for maintainability but static items match requirement -->
+        </div>
+    </div>
+    <!-- ROW 2: Shoes & Sandals -->
+    <div class="product-row">
+        <div class="row-title"><i class="fas fa-shoe-prints"></i> Tiny Treads: Shoes & Sandals</div>
+        <div class="cards-grid" id="row2"></div>
+    </div>
+    <!-- ROW 3: Socks & cozy wear -->
+    <div class="product-row">
+        <div class="row-title"><i class="fas fa-socks"></i> Happy Socks & Cozy Layers</div>
+        <div class="cards-grid" id="row3"></div>
+    </div>
+    <!-- ROW 4: Fun shorts & more shoes mix -->
+    <div class="product-row">
+        <div class="row-title"><i class="fas fa-futbol"></i> Active Collection: Shorts + Sports Shoes</div>
+        <div class="cards-grid" id="row4"></div>
+    </div>
+</main>
+
+<!-- FOOTER with social media links -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="social-links">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+        <p>🌈 Follow us for daily cuteness & exclusive deals!</p>
+        <div class="copyright">© 2025 LittleSteps – Where childhood style meets joy</div>
+    </div>
+</footer>
+
+<script>
+    // HIGH QUALITY product images (all realistic, bright, appropriate aspect ratio 1:1)
+    // We'll generate 4 rows * 7 = 28 unique products. All distinct categories: shoes, socks, shorts, sandals, etc.
+    const productCatalog = [
+        // ROW 1: Summer / shorts, t-shirts, cute dresses (7 items)
+        { name: "Rainbow Stripe Tee", price: "$14.99", category: "T-shirt", img: "https://picsum.photos/id/20/400/400" , alt: "Kids colorful tshirt" },
+        { name: "Denim Jungle Shorts", price: "$19.99", category: "Shorts", img: "https://picsum.photos/id/26/400/400" , alt: "denim shorts for kids" },
+        { name: "Sunny Flutter Dress", price: "$24.99", category: "Dress", img: "https://picsum.photos/id/30/400/400" , alt: "summer dress" },
+        { name: "Beach Vibes Set", price: "$29.99", category: "2-pc set", img: "https://picsum.photos/id/127/400/400" , alt: "beach outfit" },
+        { name: "Palm Print Romper", price: "$22.99", category: "Romper", img: "https://picsum.photos/id/96/400/400" , alt: "green romper" },
+        { name: "Cotton Biker Shorts", price: "$12.99", category: "Shorts", img: "https://picsum.photos/id/179/400/400" , alt: "cotton shorts" },
+        { name: "Smiley Graphic Tee", price: "$15.99", category: "T-shirt", img: "https://picsum.photos/id/22/400/400" , alt: "smiley tshirt" },
+        
+        // ROW 2: Shoes & Sandals (7 items)
+        { name: "Glow Sneakers", price: "$34.99", category: "Shoes", img: "https://picsum.photos/id/1/400/400" , alt: "kids running shoes" },
+        { name: "Croc-inspired Clogs", price: "$24.99", category: "Clogs", img: "https://picsum.photos/id/12/400/400" , alt: "colorful clogs" },
+        { name: "Leather Sandals", price: "$29.99", category: "Sandals", img: "https://picsum.photos/id/21/400/400" , alt: "leather sandals" },
+        { name: "Rainbow Sneakers", price: "$39.99", category: "Shoes", img: "https://picsum.photos/id/29/400/400" , alt: "rainbow shoes" },
+        { name: "Sport Slides", price: "$18.99", category: "Sandals", img: "https://picsum.photos/id/38/400/400" , alt: "sport slides" },
+        { name: "Ballet Flats", price: "$27.99", category: "Flats", img: "https://picsum.photos/id/43/400/400" , alt: "ballet shoes" },
+        { name: "Ankle Boots", price: "$42.99", category: "Boots", img: "https://picsum.photos/id/57/400/400" , alt: "ankle boots" },
+
+        // ROW 3: Socks + cozy wear (7 items: socks, tights, leg warmers, etc)
+        { name: "Animal Face Socks (3pk)", price: "$9.99", category: "Socks", img: "https://picsum.photos/id/44/400/400" , alt: "funny animal socks" },
+        { name: "Striped Crew Socks", price: "$7.99", category: "Socks", img: "https://picsum.photos/id/55/400/400" , alt: "striped socks" },
+        { name: "Frilly Ankle Socks", price: "$6.99", category: "Socks", img: "https://picsum.photos/id/62/400/400" , alt: "frilly socks" },
+        { name: "Knit Leg Warmers", price: "$11.99", category: "Leg warmers", img: "https://picsum.photos/id/74/400/400" , alt: "cozy leg warmers" },
+        { name: "Unicorn Dream Socks", price: "$8.99", category: "Socks", img: "https://picsum.photos/id/82/400/400" , alt: "unicorn socks" },
+        { name: "Heart Print Tights", price: "$10.99", category: "Tights", img: "https://picsum.photos/id/94/400/400" , alt: "heart tights" },
+        { name: "Pom-pom Slipper Socks", price: "$13.99", category: "Slipper socks", img: "https://picsum.photos/id/113/400/400" , alt: "pom pom socks" },
+
+        // ROW 4: Shorts, additional shoes, sandals & active (mix)
+        { name: "Cargo Shorts (Khaki)", price: "$21.99", category: "Shorts", img: "https://picsum.photos/id/124/400/400" , alt: "cargo shorts" },
+        { name: "Mesh Sport Shorts", price: "$16.99", category: "Shorts", img: "https://picsum.photos/id/129/400/400" , alt: "mesh shorts" },
+        { name: "Jelly Sandals", price: "$19.99", category: "Sandals", img: "https://picsum.photos/id/135/400/400" , alt: "jelly sandals" },
+        { name: "Retro High Tops", price: "$44.99", category: "Shoes", img: "https://picsum.photos/id/140/400/400" , alt: "high top sneakers" },
+        { name: "Velcro Sneakers", price: "$32.99", category: "Shoes", img: "https://picsum.photos/id/155/400/400" , alt: "velcro sneakers" },
+        { name: "Printed Swim Shorts", price: "$17.99", category: "Swimwear", img: "https://picsum.photos/id/162/400/400" , alt: "swim shorts" },
+        { name: "Light-Up Runners", price: "$48.99", category: "Shoes", img: "https://picsum.photos/id/177/400/400" , alt: "light up shoes" }
+    ];
+
+    // Helper to fill rows: row0 -> indices 0-6, row1 -> 7-13, row2 -> 14-20, row3 -> 21-27
+    function buildCards(startIdx, rowId) {
+        const container = document.getElementById(rowId);
+        if(!container) return;
+        container.innerHTML = '';
+        for(let i = 0; i < 7; i++) {
+            const prod = productCatalog[startIdx + i];
+            if(prod) {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${prod.img}" alt="${prod.alt}" class="card-img" loading="lazy">
+                    <div class="product-title">${prod.name}</div>
+                    <div class="price">${prod.price}</div>
+                    <span class="card-category">${prod.category}</span>
+                `;
+                container.appendChild(card);
+            } else {
+                // Fallback (safety)
+                const fallback = document.createElement('div');
+                fallback.className = 'product-card';
+                fallback.innerHTML = `<img src="https://picsum.photos/id/169/400/400" class="card-img" alt="cute clothing"><div class="product-title">Cozy Outfit</div><div class="price">$14.99</div><span class="card-category">New</span>`;
+                container.appendChild(fallback);
+            }
+        }
+    }
+
+    // Build all rows
+    buildCards(0, 'row1');   // first 7
+    buildCards(7, 'row2');   // shoes & sandals block
+    buildCards(14, 'row3');  // socks & cozy
+    buildCards(21, 'row4');  // shorts + shoes mix
+
+    // Optional: search demo feedback (just to make search interactive)
+    const searchBtn = document.getElementById('searchBtn');
+    const searchInput = document.getElementById('searchInput');
+    if(searchBtn && searchInput) {
+        searchBtn.addEventListener('click', () => {
+            const query = searchInput.value.trim();
+            if(query === "") {
+                alert("✨ Type something like 'shorts', 'socks', or 'shoes' to explore!");
+            } else {
+                alert(`🔍 Searching for "${query}"...\n🌟 Check out our amazing children's collection! (Demo interaction)`);
+            }
+        });
+        searchInput.addEventListener('keypress', (e) => {
+            if(e.key === 'Enter') {
+                const query = searchInput.value.trim();
+                alert(`🔎 Looking for "${query}"? Visit our catalog for more!`);
+            }
+        });
+    }
+    
+    // tiny hover ripple for dropdowns: all good
+    console.log("Landing page ready — bright colors, sticky menu, 4x7 product grid!");
+</script>
+</body>
+</html>
